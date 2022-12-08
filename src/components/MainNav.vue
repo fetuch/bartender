@@ -4,7 +4,19 @@
       <div
         class="mx-auto flex h-full flex-nowrap border-b border-solid border-brand-gray-1 px-8"
       >
-        <a href="/" class="flex h-full items-center text-xl">{{ appName }}</a>
+        <a :href="url" class="flex h-full items-center text-xl">{{
+          appName
+        }}</a>
+
+        <nav class="ml-12 h-full">
+          <ul class="flex h-full list-none space-x-5">
+            <li v-for="menuItem in menuItems" :key="menuItem" class="h-full">
+              <a href="" class="flex h-full items-center py-2.5">{{
+                menuItem
+              }}</a>
+            </li>
+          </ul>
+        </nav>
       </div>
     </div>
   </header>
@@ -16,6 +28,8 @@ export default {
   data() {
     return {
       appName: "Bartender App",
+      url: "https://careers.google.com",
+      menuItems: ["Drinks", "Ingredients"],
     };
   },
 };
