@@ -6,6 +6,11 @@ describe("TheSubnav", () => {
   describe("when user is on drinks page", () => {
     it("displays drink count", () => {
       render(TheSubnav, {
+        global: {
+          stubs: {
+            FontAwesomeIcon: true,
+          },
+        },
         data() {
           return {
             onDrinkResultsPage: true,
@@ -22,6 +27,11 @@ describe("TheSubnav", () => {
   describe("when user is not on drinks page", () => {
     it("does NOT display drink count", () => {
       render(TheSubnav, {
+        global: {
+          stubs: {
+            FontAwesomeIcon: true,
+          },
+        },
         data() {
           return {
             onDrinkResultsPage: false,

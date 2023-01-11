@@ -21,7 +21,13 @@ describe("MainNav", () => {
 
   describe("when the user logs in", () => {
     it("displays user profile picture", async () => {
-      render(MainNav);
+      render(MainNav, {
+        global: {
+          stubs: {
+            FontAwesomeIcon: true,
+          },
+        },
+      });
 
       let profileImage = screen.queryByRole("img", {
         name: /user profile image/i,
