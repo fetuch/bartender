@@ -7,7 +7,7 @@
         </div>
 
         <div class="col-span-5 col-start-2 border border-blue-700">
-          5 columns
+          <the-headline />
         </div>
 
         <div class="col-span-5 col-start-7 border border-blue-700">
@@ -23,7 +23,13 @@
 </template>
 
 <script>
+import TheHeadline from "@/components/TheHeadline.vue";
+
 export default {
   name: "TheHero",
+
+  components: {
+    TheHeadline,
+  },
 };
 </script>
