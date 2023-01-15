@@ -1,11 +1,11 @@
 <template>
-  <section>
-    <h1 class="mb-14 text-8xl font-bold tracking-tighter">
+  <section class="mb-16">
+    <h1 class="mb-14 text-6xl font-bold tracking-tighter">
       <span :class="actionClasses">{{ action }}</span>
       <br />
-      {{ complement }}
+      your next drink at Bartender
     </h1>
-    <h2 class="text-3xl font-light">Find your next drink at Bartender.</h2>
+    <h2 class="text-3xl font-light">Experiment with flavors.</h2>
   </section>
 </template>
 
@@ -37,14 +37,9 @@ export default {
   methods: {
     changeTitle() {
       this.interval = setInterval(() => {
-        const actions = ["Create", "Experiment", "Mix"];
-        const complements = [
-          "Memorable Experience",
-          "With Flavors",
-          "Your Ingredients",
-        ];
+        const actions = ["Create", "Find", "Mix"];
+
         this.action = nextElementInList(actions, this.action);
-        this.complement = nextElementInList(complements, this.complement);
       }, 3000);
     },
   },
@@ -56,15 +51,11 @@ export default {
   color: #1a73e8;
 }
 
-.experiment {
+.find {
   color: #34a853;
 }
 
 .mix {
   color: #f9ab00;
-}
-
-.code {
-  color: #d93025;
 }
 </style>

@@ -16,7 +16,7 @@ describe("TheHeadline", () => {
     render(TheHeadline);
 
     const actionPhrase = screen.getByRole("heading", {
-      name: /Create Memorable Experience/i,
+      name: /Create your next drink at Bartender/i,
     });
     expect(actionPhrase).toBeInTheDocument();
   });
@@ -36,7 +36,7 @@ describe("TheHeadline", () => {
 
     await nextTick();
     const actionPhrase = screen.getByRole("heading", {
-      name: /experiment with flavors/i,
+      name: /find your next drink at Bartender/i,
     });
 
     expect(actionPhrase).toBeInTheDocument();
