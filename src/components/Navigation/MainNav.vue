@@ -4,9 +4,11 @@
       <div
         class="mx-auto flex h-full flex-nowrap border-b border-solid border-brand-gray-1 px-8"
       >
-        <a :href="url" class="flex h-full items-center text-xl">{{
-          appName
-        }}</a>
+        <router-link
+          :to="{ name: 'Home' }"
+          class="flex h-full items-center text-xl"
+          >Bartender App</router-link
+        >
 
         <nav class="ml-12 h-full">
           <ul class="flex h-full list-none space-x-5">
@@ -45,8 +47,6 @@ export default {
 
   data() {
     return {
-      appName: "Bartender App",
-      url: "/",
       menuItems: ["Drinks", "Ingredients"],
       isLoggedIn: false,
     };
