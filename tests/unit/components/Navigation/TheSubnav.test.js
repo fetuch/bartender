@@ -3,20 +3,26 @@ import { render, screen } from "@testing-library/vue";
 import TheSubnav from "@/components/Navigation/TheSubnav.vue";
 
 describe("TheSubnav", () => {
-  describe("when user is on drinks page", () => {
-    it("displays drink count", () => {
-      render(TheSubnav, {
-        global: {
-          stubs: {
-            FontAwesomeIcon: true,
+  const renderTheSubnav = (routeName) => {
+    render(TheSubnav, {
+      global: {
+        mocks: {
+          $route: {
+            name: routeName,
           },
         },
-        data() {
-          return {
-            onDrinkResultsPage: true,
-          };
+        stubs: {
+          FontAwesomeIcon: true,
         },
-      });
+      },
+    });
+  };
+
+  describe("when user is on drinks page", () => {
+    it("displays drink count", () => {
+      const routeName = "DrinkResults";
+
+      renderTheSubnav(routeName);
 
       const drinkCount = screen.getByText("69");
 
@@ -26,18 +32,9 @@ describe("TheSubnav", () => {
 
   describe("when user is not on drinks page", () => {
     it("does NOT display drink count", () => {
-      render(TheSubnav, {
-        global: {
-          stubs: {
-            FontAwesomeIcon: true,
-          },
-        },
-        data() {
-          return {
-            onDrinkResultsPage: false,
-          };
-        },
-      });
+      const routeName = "Home";
+
+      renderTheSubnav(routeName);
 
       const drinkCount = screen.queryByText("69");
 
