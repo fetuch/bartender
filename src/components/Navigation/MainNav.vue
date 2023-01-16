@@ -18,7 +18,7 @@
               class="h-full"
             >
               <router-link
-                :to="menuItem.url"
+                :to="{ name: menuItem.name }"
                 class="flex h-full items-center py-2.5"
                 >{{ menuItem.text }}</router-link
               >
@@ -54,8 +54,8 @@ export default {
   data() {
     return {
       menuItems: [
-        { text: "Drinks", url: "/drinks/results" },
-        { text: "Ingredients", url: "/" },
+        { text: "Drinks", name: "DrinkResults" },
+        { text: "Ingredients", name: "Home" },
       ],
       isLoggedIn: false,
     };
