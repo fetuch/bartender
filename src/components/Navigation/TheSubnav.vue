@@ -12,10 +12,10 @@
 <script>
 export default {
   name: "TheSubnav",
-  data() {
-    return {
-      onDrinkResultsPage: true,
-    };
+  computed: {
+    onDrinkResultsPage() {
+      return this.$route.name === "DrinkResults";
+    },
   },
 };
 </script>
