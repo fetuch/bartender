@@ -7,9 +7,12 @@
 
     <div class="flex h-full flex-1 flex-nowrap text-base font-light">
       <div class="relative flex h-full flex-1 items-center pr-3">
-        <label class="absolute left-0 -top-10">Ingredients</label>
+        <label for="ingredients" class="absolute left-0 -top-10"
+          >Ingredients</label
+        >
 
         <text-input
+          id="ingredients"
           v-model="ingredients"
           placeholder="Gin, rum, orange juice, banana..."
         />
