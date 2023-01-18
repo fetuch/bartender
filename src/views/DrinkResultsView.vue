@@ -1,16 +1,14 @@
 <template>
-  <h1 class="text-6xl font-bold">Drink Results page</h1>
-
-  <button @click="goToHome">Go to Home Page</button>
+  <drink-filters-sidebar />
 </template>
 
 <script>
+import DrinkFiltersSidebar from "@/components/DrinkResults/DrinkFiltersSidebar/DrinkFiltersSidebar.vue";
+
 export default {
   name: "DrinkResultsView",
-  methods: {
-    goToHome() {
-      this.$router.push({ name: "Home" });
-    },
+  components: {
+    DrinkFiltersSidebar,
   },
 };
 </script>
