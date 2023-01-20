@@ -37,16 +37,16 @@
 </template>
 
 <script>
-import axios from "axios";
+import { mapActions, mapState } from "pinia";
 
 import DrinkListing from "@/components/DrinkResults/DrinkListing.vue";
+import { useDrinksStore, FETCH_DRINKS } from "@/stores/drinks";
 
 export default {
   name: "DrinkListings",
   components: { DrinkListing },
   data() {
     return {
-      drinks: [],
       perPage: 10,
     };
   },
@@ -59,22 +59,26 @@ export default {
       const firstPage = 1;
       return previousPage >= firstPage ? previousPage : undefined;
     },
-    nextPage() {
-      const nextPage = this.currentPage + 1;
-      const maxPage = Math.ceil(this.drinks.length / this.perPage);
-      return nextPage <= maxPage ? nextPage : undefined;
-    },
-    displayedDrinks() {
-      const pageNumber = this.currentPage;
-      const firstDrinkIndex = (pageNumber - 1) * this.perPage;
-      const lastDrinkIndex = pageNumber * this.perPage;
-      return this.drinks.slice(firstDrinkIndex, lastDrinkIndex);
-    },
+    ...mapState(useDrinksStore, {
+      drinks: "drinks",
+      nextPage() {
+        const nextPage = this.currentPage + 1;
+        const maxPage = Math.ceil(this.drinks.length / this.perPage);
+        return nextPage <= maxPage ? nextPage : undefined;
+      },
+      displayedDrinks() {
+        const pageNumber = this.currentPage;
+        const firstDrinkIndex = (pageNumber - 1) * this.perPage;
+        const lastDrinkIndex = pageNumber * this.perPage;
+        return this.drinks.slice(firstDrinkIndex, lastDrinkIndex);
+      },
+    }),
   },
   async mounted() {
-    const baseUrl = import.meta.env.VITE_APP_API_URL;
-    const response = await axios.get(`${baseUrl}/drinks`);
-    this.drinks = response.data;
+    this.FETCH_DRINKS();
+  },
+  methods: {
+    ...mapActions(useDrinksStore, [FETCH_DRINKS]),
   },
 };
 </script>

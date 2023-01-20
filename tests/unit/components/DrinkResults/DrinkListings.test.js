@@ -1,8 +1,9 @@
 import { render, screen } from "@testing-library/vue";
 import { RouterLinkStub } from "@vue/test-utils";
-import axios from "axios";
+import { createTestingPinia } from "@pinia/testing";
 
 import DrinkListings from "@/components/DrinkResults/DrinkListings.vue";
+import { useDrinksStore } from "@/stores/drinks";
 
 vi.mock("axios");
 
@@ -15,8 +16,11 @@ describe("DrinkListings", () => {
   });
 
   const renderDrinkListings = ($route) => {
+    const pinia = createTestingPinia();
+
     render(DrinkListings, {
       global: {
+        plugins: [pinia],
         mocks: {
           $route,
         },
@@ -28,20 +32,21 @@ describe("DrinkListings", () => {
   };
 
   it("fetches drinks", () => {
-    axios.get.mockResolvedValue({ data: [] });
     const $route = createRoute();
 
     renderDrinkListings($route);
 
-    expect(axios.get).toHaveBeenCalledWith("http://myfakeapi.com/drinks");
+    const drinksStore = useDrinksStore();
+    expect(drinksStore.FETCH_DRINKS).toHaveBeenCalled();
   });
 
   it("displays maximum of 10 drinks", async () => {
-    axios.get.mockResolvedValue({ data: Array(15).fill({}) });
     const queryParams = { page: "1" };
     const $route = createRoute(queryParams);
 
     renderDrinkListings($route);
+    const drinksStore = useDrinksStore();
+    drinksStore.drinks = Array(15).fill({});
 
     const drinkListings = await screen.findAllByRole("listitem");
     expect(drinkListings).toHaveLength(10);
@@ -71,11 +76,12 @@ describe("DrinkListings", () => {
 
   describe("when user is on first page", () => {
     it("does not show link to previous page", async () => {
-      axios.get.mockResolvedValue({ data: Array(15).fill({}) });
       const queryParams = { page: "1" };
       const $route = createRoute(queryParams);
 
       renderDrinkListings($route);
+      const drinksStore = useDrinksStore();
+      drinksStore.drinks = Array(15).fill({});
 
       await screen.findAllByRole("listitem");
       const previousLink = screen.queryByRole("link", { name: /previous/i });
@@ -83,11 +89,12 @@ describe("DrinkListings", () => {
     });
 
     it("shows link to next page", async () => {
-      axios.get.mockResolvedValue({ data: Array(15).fill({}) });
       const queryParams = { page: "1" };
       const $route = createRoute(queryParams);
 
       renderDrinkListings($route);
+      const drinksStore = useDrinksStore();
+      drinksStore.drinks = Array(15).fill({});
 
       await screen.findAllByRole("listitem");
       const nextLink = screen.queryByRole("link", { name: /next/i });
@@ -97,11 +104,12 @@ describe("DrinkListings", () => {
 
   describe("when user is on last page", () => {
     it("does not show link to next page", async () => {
-      axios.get.mockResolvedValue({ data: Array(15).fill({}) });
       const queryParams = { page: "2" };
       const $route = createRoute(queryParams);
 
       renderDrinkListings($route);
+      const drinksStore = useDrinksStore();
+      drinksStore.drinks = Array(15).fill({});
 
       await screen.findAllByRole("listitem");
       const nextLink = screen.queryByRole("link", { name: /next/i });
@@ -109,11 +117,12 @@ describe("DrinkListings", () => {
     });
 
     it("shows link to previous page", async () => {
-      axios.get.mockResolvedValue({ data: Array(15).fill({}) });
       const queryParams = { page: "2" };
       const $route = createRoute(queryParams);
 
       renderDrinkListings($route);
+      const drinksStore = useDrinksStore();
+      drinksStore.drinks = Array(15).fill({});
 
       await screen.findAllByRole("listitem");
       const previousLink = screen.queryByRole("link", { name: /previous/i });
