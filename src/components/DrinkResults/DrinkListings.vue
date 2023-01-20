@@ -72,7 +72,8 @@ export default {
     },
   },
   async mounted() {
-    const response = await axios.get("http://localhost:3000/drinks");
+    const baseUrl = import.meta.env.VITE_APP_API_URL;
+    const response = await axios.get(`${baseUrl}/drinks`);
     this.drinks = response.data;
   },
 };

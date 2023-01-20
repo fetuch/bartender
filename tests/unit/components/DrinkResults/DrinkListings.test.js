@@ -33,7 +33,7 @@ describe("DrinkListings", () => {
 
     renderDrinkListings($route);
 
-    expect(axios.get).toHaveBeenCalledWith("http://localhost:3000/drinks");
+    expect(axios.get).toHaveBeenCalledWith("http://myfakeapi.com/drinks");
   });
 
   it("displays maximum of 10 drinks", async () => {
@@ -45,5 +45,79 @@ describe("DrinkListings", () => {
 
     const drinkListings = await screen.findAllByRole("listitem");
     expect(drinkListings).toHaveLength(10);
+  });
+
+  describe("when params exclude page number", () => {
+    it("displays page number 1", () => {
+      const queryParams = { page: undefined };
+      const $route = createRoute(queryParams);
+
+      renderDrinkListings($route);
+
+      expect(screen.getByText("Page 1")).toBeInTheDocument();
+    });
+  });
+
+  describe("when params include page number", () => {
+    it("displays page number", () => {
+      const queryParams = { page: "3" };
+      const $route = createRoute(queryParams);
+
+      renderDrinkListings($route);
+
+      expect(screen.getByText("Page 3")).toBeInTheDocument();
+    });
+  });
+
+  describe("when user is on first page", () => {
+    it("does not show link to previous page", async () => {
+      axios.get.mockResolvedValue({ data: Array(15).fill({}) });
+      const queryParams = { page: "1" };
+      const $route = createRoute(queryParams);
+
+      renderDrinkListings($route);
+
+      await screen.findAllByRole("listitem");
+      const previousLink = screen.queryByRole("link", { name: /previous/i });
+      expect(previousLink).not.toBeInTheDocument();
+    });
+
+    it("shows link to next page", async () => {
+      axios.get.mockResolvedValue({ data: Array(15).fill({}) });
+      const queryParams = { page: "1" };
+      const $route = createRoute(queryParams);
+
+      renderDrinkListings($route);
+
+      await screen.findAllByRole("listitem");
+      const nextLink = screen.queryByRole("link", { name: /next/i });
+      expect(nextLink).toBeInTheDocument();
+    });
+  });
+
+  describe("when user is on last page", () => {
+    it("does not show link to next page", async () => {
+      axios.get.mockResolvedValue({ data: Array(15).fill({}) });
+      const queryParams = { page: "2" };
+      const $route = createRoute(queryParams);
+
+      renderDrinkListings($route);
+
+      await screen.findAllByRole("listitem");
+      const nextLink = screen.queryByRole("link", { name: /next/i });
+      expect(nextLink).not.toBeInTheDocument();
+    });
+
+    it("shows link to previous page", async () => {
+      axios.get.mockResolvedValue({ data: Array(15).fill({}) });
+      const queryParams = { page: "2" };
+      const $route = createRoute(queryParams);
+
+      renderDrinkListings($route);
+
+      await screen.findAllByRole("listitem");
+      const previousLink = screen.queryByRole("link", { name: /previous/i });
+      expect(previousLink).toBeInTheDocument();
+    });
   });
 });
