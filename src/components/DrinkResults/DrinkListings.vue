@@ -1,5 +1,5 @@
 <template>
-  <main class="flex-auto bg-brand-gray-2 p-8">
+  <main class="flex-1 bg-brand-gray-2 p-8">
     <ol>
       <drink-listing
         v-for="drink in displayedDrinks"
