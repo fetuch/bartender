@@ -59,7 +59,7 @@ export default {
     return {
       menuItems: [
         { text: "Drinks", name: "DrinkResults" },
-        { text: "Ingredients", name: "Home" },
+        { text: "Ingredients", name: "Ingredients" },
       ],
     };
   },
