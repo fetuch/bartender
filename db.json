@@ -320,5 +320,19 @@
       ],
       "dateAdded": "2023-01-18"
     }
+  ],
+  "spotlights": [
+    {
+      "id": 1,
+      "img": "https://img.freepik.com/free-photo/green-margarita-midori-liquor-ice-mint-lime-side-view_141793-3123.jpg",
+      "title": "Margarita",
+      "description": "Rub the rim of the glass with the lime slice to make the salt stick to it."
+    },
+    {
+      "id": 2,
+      "img": "https://media.istockphoto.com/id/1303850433/es/foto/cuba-libre-con-ron-marr%C3%B3n-cola-y-lima-cuba-libre-o-c%C3%B3ctel-de-larga-isla.jpg?b=1&s=170667a&w=0&k=20&c=aiax8Lju6qqS3iikmL3ov7NLF8lFwMZhF-P0klv-FL8=",
+      "title": "Cuba libre",
+      "description": "After pouring the lime juice into the highball glass, add rum, fill the rest of the glass with cola, and then stir."
+    }
   ]
 }
