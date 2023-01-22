@@ -3,16 +3,26 @@
     <div class="flex h-full items-center px-8">
       <div v-if="onDrinkResultsPage">
         <font-awesome-icon :icon="['fas', 'search']" class="mr-3" />
-        <span><span class="text-brand-green-1">69</span> drinks matched</span>
+        <span
+          ><span class="text-brand-green-1">{{
+            FILTERED_DRINKS_BY_CATEGORIES.length
+          }}</span>
+          drinks matched</span
+        >
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from "pinia";
+
+import { useDrinksStore, FILTERED_DRINKS_BY_CATEGORIES } from "@/stores/drinks";
+
 export default {
   name: "TheSubnav",
   computed: {
+    ...mapState(useDrinksStore, [FILTERED_DRINKS_BY_CATEGORIES]),
     onDrinkResultsPage() {
       return this.$route.name === "DrinkResults";
     },

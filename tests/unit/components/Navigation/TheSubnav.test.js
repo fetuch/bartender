@@ -1,11 +1,17 @@
 import { render, screen } from "@testing-library/vue";
+import { createTestingPinia } from "@pinia/testing";
 
 import TheSubnav from "@/components/Navigation/TheSubnav.vue";
+import { useDrinksStore } from "@/stores/drinks";
 
 describe("TheSubnav", () => {
   const renderTheSubnav = (routeName) => {
+    const pinia = createTestingPinia();
+    const drinksStore = useDrinksStore();
+
     render(TheSubnav, {
       global: {
+        plugins: [pinia],
         mocks: {
           $route: {
             name: routeName,
@@ -16,15 +22,21 @@ describe("TheSubnav", () => {
         },
       },
     });
+
+    return { drinksStore };
   };
 
   describe("when user is on drinks page", () => {
-    it("displays drink count", () => {
+    it("displays drink count", async () => {
       const routeName = "DrinkResults";
 
-      renderTheSubnav(routeName);
+      const { drinksStore } = renderTheSubnav(routeName);
+      const numberOfDrinks = 11;
+      drinksStore.FILTERED_DRINKS_BY_CATEGORIES = Array(numberOfDrinks).fill(
+        {}
+      );
 
-      const drinkCount = screen.getByText("69");
+      const drinkCount = await screen.findByText(numberOfDrinks);
 
       expect(drinkCount).toBeInTheDocument();
     });
@@ -34,9 +46,13 @@ describe("TheSubnav", () => {
     it("does NOT display drink count", () => {
       const routeName = "Home";
 
-      renderTheSubnav(routeName);
+      const { drinksStore } = renderTheSubnav(routeName);
+      const numberOfDrinks = 11;
+      drinksStore.FILTERED_DRINKS_BY_CATEGORIES = Array(numberOfDrinks).fill(
+        {}
+      );
 
-      const drinkCount = screen.queryByText("69");
+      const drinkCount = screen.queryByText(numberOfDrinks);
 
       expect(drinkCount).not.toBeInTheDocument();
     });
