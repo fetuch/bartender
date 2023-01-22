@@ -69,7 +69,7 @@ describe("getters", () => {
     });
 
     describe("when the user has not selected any categories", () => {
-      it("returns all jobs", () => {
+      it("returns all drinks", () => {
         const drinksStore = useDrinksStore();
         drinksStore.drinks = [
           { category: "Shot" },

@@ -40,7 +40,11 @@
 import { mapActions, mapState } from "pinia";
 
 import DrinkListing from "@/components/DrinkResults/DrinkListing.vue";
-import { useDrinksStore, FETCH_DRINKS } from "@/stores/drinks";
+import {
+  useDrinksStore,
+  FETCH_DRINKS,
+  FILTERED_DRINKS_BY_CATEGORIES,
+} from "@/stores/drinks";
 
 export default {
   name: "DrinkListings",
@@ -60,17 +64,22 @@ export default {
       return previousPage >= firstPage ? previousPage : undefined;
     },
     ...mapState(useDrinksStore, {
-      drinks: "drinks",
+      FILTERED_DRINKS_BY_CATEGORIES,
       nextPage() {
         const nextPage = this.currentPage + 1;
-        const maxPage = Math.ceil(this.drinks.length / this.perPage);
+        const maxPage = Math.ceil(
+          this.FILTERED_DRINKS_BY_CATEGORIES.length / this.perPage
+        );
         return nextPage <= maxPage ? nextPage : undefined;
       },
       displayedDrinks() {
         const pageNumber = this.currentPage;
         const firstDrinkIndex = (pageNumber - 1) * this.perPage;
         const lastDrinkIndex = pageNumber * this.perPage;
-        return this.drinks.slice(firstDrinkIndex, lastDrinkIndex);
+        return this.FILTERED_DRINKS_BY_CATEGORIES.slice(
+          firstDrinkIndex,
+          lastDrinkIndex
+        );
       },
     }),
   },
