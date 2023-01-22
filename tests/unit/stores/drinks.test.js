@@ -30,3 +30,24 @@ describe("actions", () => {
     });
   });
 });
+
+describe("getters", () => {
+  beforeEach(() => {
+    setActivePinia(createPinia());
+  });
+
+  describe("UNIQUE_CATEGORIES", () => {
+    it("finds unique categories from list of drinks", () => {
+      const store = useDrinksStore();
+      store.drinks = [
+        { category: "Shot" },
+        { category: "Shake" },
+        { category: "Shot" },
+      ];
+
+      const result = store.UNIQUE_CATEGORIES;
+
+      expect(result).toEqual(new Set(["Shot", "Shake"]));
+    });
+  });
+});
