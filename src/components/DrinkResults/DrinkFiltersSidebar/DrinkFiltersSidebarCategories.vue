@@ -8,7 +8,14 @@
             :key="category"
             class="h-8 w-1/2"
           >
-            <input :id="category" type="checkbox" class="mr-3" />
+            <input
+              :id="category"
+              v-model="selectedCategories"
+              :value="category"
+              type="checkbox"
+              class="mr-3"
+              @change="selectCategory"
+            />
             <label :for="category">{{ category }}</label>
           </li>
         </ul>
@@ -18,16 +25,28 @@
 </template>
 
 <script>
-import { mapState } from "pinia";
+import { mapActions, mapState } from "pinia";
 import { useDrinksStore, UNIQUE_CATEGORIES } from "@/stores/drinks";
+import { useUserStore, ADD_SELECTED_CATEGORIES } from "@/stores/user";
 
 import CollapsibleAccordion from "@/components/Shared/CollapsibleAccordion.vue";
 
 export default {
   name: "DrinkFiltersSidebarCategories",
   components: { CollapsibleAccordion },
+  data() {
+    return {
+      selectedCategories: [],
+    };
+  },
   computed: {
     ...mapState(useDrinksStore, [UNIQUE_CATEGORIES]),
+  },
+  methods: {
+    ...mapActions(useUserStore, [ADD_SELECTED_CATEGORIES]),
+    selectCategory() {
+      this.ADD_SELECTED_CATEGORIES(this.selectedCategories);
+    },
   },
 };
 </script>

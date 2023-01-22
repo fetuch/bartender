@@ -11,6 +11,11 @@ describe("state", () => {
     const store = useUserStore();
     expect(store.isLoggedIn).toBe(false);
   });
+
+  it("stores categories that the user would like to filter drinks by", () => {
+    const store = useUserStore();
+    expect(store.selectedCategories).toEqual([]);
+  });
 });
 
 describe("actions", () => {
@@ -23,6 +28,14 @@ describe("actions", () => {
       const store = useUserStore();
       store.loginUser();
       expect(store.isLoggedIn).toBe(true);
+    });
+  });
+
+  describe("ADD_SELECTED_CATEGORIES", () => {
+    it("updates categories the user has chosen to filter drinks by", () => {
+      const store = useUserStore();
+      store.ADD_SELECTED_CATEGORIES(["Cat1", "Cat2"]);
+      expect(store.selectedCategories).toEqual(["Cat1", "Cat2"]);
     });
   });
 });
