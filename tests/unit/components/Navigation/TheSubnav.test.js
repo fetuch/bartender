@@ -32,9 +32,7 @@ describe("TheSubnav", () => {
 
       const { drinksStore } = renderTheSubnav(routeName);
       const numberOfDrinks = 11;
-      drinksStore.FILTERED_DRINKS_BY_CATEGORIES = Array(numberOfDrinks).fill(
-        {}
-      );
+      drinksStore.FILTERED_DRINKS = Array(numberOfDrinks).fill({});
 
       const drinkCount = await screen.findByText(numberOfDrinks);
 
@@ -48,9 +46,7 @@ describe("TheSubnav", () => {
 
       const { drinksStore } = renderTheSubnav(routeName);
       const numberOfDrinks = 11;
-      drinksStore.FILTERED_DRINKS_BY_CATEGORIES = Array(numberOfDrinks).fill(
-        {}
-      );
+      drinksStore.FILTERED_DRINKS = Array(numberOfDrinks).fill({});
 
       const drinkCount = screen.queryByText(numberOfDrinks);
 

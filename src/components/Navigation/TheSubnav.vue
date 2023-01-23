@@ -4,9 +4,7 @@
       <div v-if="onDrinkResultsPage">
         <font-awesome-icon :icon="['fas', 'search']" class="mr-3" />
         <span
-          ><span class="text-brand-green-1">{{
-            FILTERED_DRINKS_BY_CATEGORIES.length
-          }}</span>
+          ><span class="text-brand-green-1">{{ FILTERED_DRINKS.length }}</span>
           drinks matched</span
         >
       </div>
@@ -17,12 +15,12 @@
 <script>
 import { mapState } from "pinia";
 
-import { useDrinksStore, FILTERED_DRINKS_BY_CATEGORIES } from "@/stores/drinks";
+import { useDrinksStore, FILTERED_DRINKS } from "@/stores/drinks";
 
 export default {
   name: "TheSubnav",
   computed: {
-    ...mapState(useDrinksStore, [FILTERED_DRINKS_BY_CATEGORIES]),
+    ...mapState(useDrinksStore, [FILTERED_DRINKS]),
     onDrinkResultsPage() {
       return this.$route.name === "DrinkResults";
     },
