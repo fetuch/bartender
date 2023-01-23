@@ -46,6 +46,7 @@ export default {
     ...mapActions(useUserStore, [ADD_SELECTED_CATEGORIES]),
     selectCategory() {
       this.ADD_SELECTED_CATEGORIES(this.selectedCategories);
+      this.$router.push({ name: "DrinkResults" });
     },
   },
 };

@@ -46,6 +46,7 @@ export default {
     ...mapActions(useUserStore, [ADD_SELECTED_GLASS_TYPES]),
     selectGlassType() {
       this.ADD_SELECTED_GLASS_TYPES(this.selectedGlassTypes);
+      this.$router.push({ name: "DrinkResults" });
     },
   },
 };
