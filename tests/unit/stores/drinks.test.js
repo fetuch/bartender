@@ -142,4 +142,56 @@ describe("getters", () => {
       });
     });
   });
+
+  describe("INCLUDE_DRINK_BY_CATEGORY", () => {
+    describe("when the user has not selected any categories", () => {
+      it("includes drink", () => {
+        const userStore = useUserStore();
+        userStore.selectedCategories = [];
+        const store = useDrinksStore();
+        const drink = { category: "Shot" };
+
+        const result = store.INCLUDE_DRINK_BY_CATEGORY(drink);
+
+        expect(result).toBe(true);
+      });
+    });
+
+    it("identifies if drink is associated with given category", () => {
+      const userStore = useUserStore();
+      userStore.selectedCategories = ["Shot", "Shake"];
+      const store = useDrinksStore();
+      const drink = { category: "Shot" };
+
+      const result = store.INCLUDE_DRINK_BY_CATEGORY(drink);
+
+      expect(result).toBe(true);
+    });
+  });
+
+  describe("INCLUDE_DRINK_BY_GLASS_TYPE", () => {
+    describe("when the user has not selected any glass type", () => {
+      it("includes drink", () => {
+        const userStore = useUserStore();
+        userStore.selectedGlassTypes = [];
+        const store = useDrinksStore();
+        const drink = { glass: "Glass" };
+
+        const result = store.INCLUDE_DRINK_BY_GLASS_TYPE(drink);
+
+        expect(result).toBe(true);
+      });
+    });
+
+    it("identifies if drink is associated with given glass type", () => {
+      const userStore = useUserStore();
+      userStore.selectedGlassTypes = ["Glass 1", "Glass 2"];
+      const store = useDrinksStore();
+      const drink = { glass: "Glass 2" };
+
+      const result = store.INCLUDE_DRINK_BY_GLASS_TYPE(drink);
+
+      expect(result).toBe(true);
+    });
+  });
 });
