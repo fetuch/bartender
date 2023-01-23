@@ -13,6 +13,7 @@
       </div>
 
       <drink-filters-sidebar-categories />
+      <drink-filters-sidebar-glass-types />
 
       <collapsible-accordion header="Drink glass" />
     </section>
@@ -23,6 +24,7 @@
 import ActionButton from "@/components/Shared/ActionButton.vue";
 import CollapsibleAccordion from "@/components/Shared/CollapsibleAccordion.vue";
 import DrinkFiltersSidebarCategories from "@/components/DrinkResults/DrinkFiltersSidebar/DrinkFiltersSidebarCategories.vue";
+import DrinkFiltersSidebarGlassTypes from "@/components/DrinkResults/DrinkFiltersSidebar/DrinkFiltersSidebarGlassTypes.vue";
 
 export default {
   name: "DrinkFiltersSidebar",
@@ -30,6 +32,7 @@ export default {
     ActionButton,
     CollapsibleAccordion,
     DrinkFiltersSidebarCategories,
+    DrinkFiltersSidebarGlassTypes,
   },
 };
 </script>

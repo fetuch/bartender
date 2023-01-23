@@ -52,6 +52,21 @@ describe("getters", () => {
     });
   });
 
+  describe("UNIQUE_GLASS_TYPES", () => {
+    it("finds unique glass types from list of drinks", () => {
+      const store = useDrinksStore();
+      store.drinks = [
+        { glass: "Glass 1" },
+        { glass: "Glass 2" },
+        { glass: "Glass 1" },
+      ];
+
+      const result = store.UNIQUE_GLASS_TYPES;
+
+      expect(result).toEqual(new Set(["Glass 1", "Glass 2"]));
+    });
+  });
+
   describe("FILTERED_DRINKS_BY_CATEGORIES", () => {
     it("identifies drinks that are associated with the given categories", () => {
       const drinksStore = useDrinksStore();
@@ -85,6 +100,44 @@ describe("getters", () => {
           { category: "Shot" },
           { category: "Shake" },
           { category: "Beer" },
+        ]);
+      });
+    });
+  });
+
+  describe("FILTERED_DRINKS_BY_GLASS_TYPES", () => {
+    it("identifies drinks that are associated with the given glass type", () => {
+      const drinksStore = useDrinksStore();
+      drinksStore.drinks = [
+        { glass: "Glass 1" },
+        { glass: "Glass 2" },
+        { glass: "Glass 3" },
+      ];
+      const userStore = useUserStore();
+      userStore.selectedGlassTypes = ["Glass 1", "Glass 3"];
+
+      const result = drinksStore.FILTERED_DRINKS_BY_GLASS_TYPES;
+
+      expect(result).toEqual([{ glass: "Glass 1" }, { glass: "Glass 3" }]);
+    });
+
+    describe("when the user has not selected any glass type", () => {
+      it("returns all drinks", () => {
+        const drinksStore = useDrinksStore();
+        drinksStore.drinks = [
+          { glass: "Glass 1" },
+          { glass: "Glass 2" },
+          { glass: "Glass 3" },
+        ];
+        const userStore = useUserStore();
+        userStore.selectedGlassTypes = [];
+
+        const result = drinksStore.FILTERED_DRINKS_BY_GLASS_TYPES;
+
+        expect(result).toEqual([
+          { glass: "Glass 1" },
+          { glass: "Glass 2" },
+          { glass: "Glass 3" },
         ]);
       });
     });

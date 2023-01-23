@@ -16,6 +16,11 @@ describe("state", () => {
     const store = useUserStore();
     expect(store.selectedCategories).toEqual([]);
   });
+
+  it("stores glass types that the user would like to filter drinks by", () => {
+    const store = useUserStore();
+    expect(store.selectedGlassTypes).toEqual([]);
+  });
 });
 
 describe("actions", () => {
@@ -36,6 +41,14 @@ describe("actions", () => {
       const store = useUserStore();
       store.ADD_SELECTED_CATEGORIES(["Cat1", "Cat2"]);
       expect(store.selectedCategories).toEqual(["Cat1", "Cat2"]);
+    });
+  });
+
+  describe("ADD_SELECTED_GLASS_TYPES", () => {
+    it("updates glass types the user has chosen to filter drinks by", () => {
+      const store = useUserStore();
+      store.ADD_SELECTED_GLASS_TYPES(["Glass1", "Glass2"]);
+      expect(store.selectedGlassTypes).toEqual(["Glass1", "Glass2"]);
     });
   });
 });
