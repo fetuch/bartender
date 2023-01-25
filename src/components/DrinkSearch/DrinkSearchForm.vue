@@ -23,25 +23,20 @@
   </form>
 </template>
 
-<script>
+<script setup>
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+
 import ActionButton from "@/components/Shared/ActionButton.vue";
 import TextInput from "@/components/Shared/TextInput.vue";
 
-export default {
-  name: "DrinkSearchForm",
-  components: { ActionButton, TextInput },
-  data() {
-    return {
-      ingredients: "",
-    };
-  },
-  methods: {
-    searchForDrinks() {
-      this.$router.push({
-        name: "DrinkResults",
-        query: { ingredients: this.ingredients },
-      });
-    },
-  },
+const ingredients = ref("");
+
+const router = useRouter();
+const searchForDrinks = () => {
+  router.push({
+    name: "DrinkResults",
+    query: { ingredients: ingredients.value },
+  });
 };
 </script>
