@@ -1,5 +1,8 @@
 import { render, screen } from "@testing-library/vue";
 import userEvent from "@testing-library/user-event";
+import { useRouter } from "vue-router";
+
+vi.mock("vue-router");
 
 import DrinkSearchForm from "@/components/DrinkSearch/DrinkSearchForm.vue";
 
@@ -7,13 +10,10 @@ describe("DrinkSearchForm", () => {
   describe("when user submits form", () => {
     it("directs user to drink results page with user's search parameters", async () => {
       const push = vi.fn();
-      const $router = { push };
+      useRouter.mockReturnValue({ push });
 
       render(DrinkSearchForm, {
         global: {
-          mocks: {
-            $router,
-          },
           stubs: {
             FontAwesomeIcon: true,
           },
