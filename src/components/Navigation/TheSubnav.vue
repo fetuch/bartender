@@ -12,18 +12,14 @@
   </div>
 </template>
 
-<script>
-import { mapState } from "pinia";
+<script setup>
+import { computed } from "vue";
+import { useRoute } from "vue-router";
+import { useDrinksStore } from "@/stores/drinks";
 
-import { useDrinksStore, FILTERED_DRINKS } from "@/stores/drinks";
+const route = useRoute();
+const onDrinkResultsPage = computed(() => route.name === "DrinkResults");
 
-export default {
-  name: "TheSubnav",
-  computed: {
-    ...mapState(useDrinksStore, [FILTERED_DRINKS]),
-    onDrinkResultsPage() {
-      return this.$route.name === "DrinkResults";
-    },
-  },
-};
+const drinksStore = useDrinksStore();
+const FILTERED_DRINKS = computed(() => drinksStore.FILTERED_DRINKS);
 </script>
