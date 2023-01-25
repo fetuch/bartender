@@ -2,33 +2,31 @@
   <button :class="buttonClass">{{ text }}</button>
 </template>
 
-<script>
-export default {
-  name: "ActionButton",
+<script setup>
+import { computed, toRefs } from "vue";
 
-  props: {
-    text: {
-      type: String,
-      required: true,
-    },
-    type: {
-      type: String,
-      required: false,
-      default: "primary",
-      validator(value) {
-        return ["primary", "secondary"].includes(value);
-      },
+const props = defineProps({
+  text: {
+    type: String,
+    required: true,
+  },
+  type: {
+    type: String,
+    required: false,
+    default: "primary",
+    validator(value) {
+      return ["primary", "secondary"].includes(value);
     },
   },
+});
 
-  computed: {
-    buttonClass() {
-      return {
-        [this.type]: true,
-      };
-    },
-  },
-};
+const { type } = toRefs(props);
+
+const buttonClass = computed(() => {
+  return {
+    [type.value]: true,
+  };
+});
 </script>
 
 <style scoped>
