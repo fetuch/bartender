@@ -1,22 +1,20 @@
 import { render, screen } from "@testing-library/vue";
 import { createTestingPinia } from "@pinia/testing";
 
+import { useRoute } from "vue-router";
+vi.mock("vue-router");
+
 import TheSubnav from "@/components/Navigation/TheSubnav.vue";
 import { useDrinksStore } from "@/stores/drinks";
 
 describe("TheSubnav", () => {
-  const renderTheSubnav = (routeName) => {
+  const renderTheSubnav = () => {
     const pinia = createTestingPinia();
     const drinksStore = useDrinksStore();
 
     render(TheSubnav, {
       global: {
         plugins: [pinia],
-        mocks: {
-          $route: {
-            name: routeName,
-          },
-        },
         stubs: {
           FontAwesomeIcon: true,
         },
@@ -28,9 +26,9 @@ describe("TheSubnav", () => {
 
   describe("when user is on drinks page", () => {
     it("displays drink count", async () => {
-      const routeName = "DrinkResults";
+      useRoute.mockReturnValue({ name: "DrinkResults" });
 
-      const { drinksStore } = renderTheSubnav(routeName);
+      const { drinksStore } = renderTheSubnav();
       const numberOfDrinks = 11;
       drinksStore.FILTERED_DRINKS = Array(numberOfDrinks).fill({});
 
@@ -42,9 +40,9 @@ describe("TheSubnav", () => {
 
   describe("when user is not on drinks page", () => {
     it("does NOT display drink count", () => {
-      const routeName = "Home";
+      useRoute.mockReturnValue({ name: "Home" });
 
-      const { drinksStore } = renderTheSubnav(routeName);
+      const { drinksStore } = renderTheSubnav();
       const numberOfDrinks = 11;
       drinksStore.FILTERED_DRINKS = Array(numberOfDrinks).fill({});
 
