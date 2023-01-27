@@ -59,7 +59,7 @@ describe("DrinkFiltersSidebarCategories", () => {
     it("navigates user to drink results page to see fresh batch of filtered drinks", async () => {
       const push = vi.fn();
       useRouter.mockReturnValue({ push });
-      const { drinksStore, $router } = renderDrinkFiltersSidebarCategories();
+      const { drinksStore } = renderDrinkFiltersSidebarCategories();
       drinksStore.UNIQUE_CATEGORIES = new Set(["Shot"]);
 
       const button = screen.getByRole("button", { name: /categories/i });
