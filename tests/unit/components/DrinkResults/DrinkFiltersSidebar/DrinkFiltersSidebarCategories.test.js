@@ -2,6 +2,9 @@ import { render, screen } from "@testing-library/vue";
 import userEvent from "@testing-library/user-event";
 import { createTestingPinia } from "@pinia/testing";
 
+import { useRouter } from "vue-router";
+vi.mock("vue-router");
+
 import DrinkFiltersSidebarCategories from "@/components/DrinkResults/DrinkFiltersSidebar/DrinkFiltersSidebarCategories.vue";
 import { useDrinksStore } from "@/stores/drinks";
 import { useUserStore } from "@/stores/user";
@@ -11,13 +14,9 @@ describe("DrinkFiltersSidebarCategories", () => {
     const pinia = createTestingPinia();
     const drinksStore = useDrinksStore();
     const userStore = useUserStore();
-    const $router = { push: vi.fn() };
 
     render(DrinkFiltersSidebarCategories, {
       global: {
-        mocks: {
-          $router,
-        },
         plugins: [pinia],
         stubs: {
           FontAwesomeIcon: true,
@@ -25,7 +24,7 @@ describe("DrinkFiltersSidebarCategories", () => {
       },
     });
 
-    return { drinksStore, userStore, $router };
+    return { drinksStore, userStore };
   };
 
   it("renders unique list of categories from drinks", async () => {
@@ -42,6 +41,7 @@ describe("DrinkFiltersSidebarCategories", () => {
 
   describe("when user clicks checkbox", () => {
     it("communicates that user has selected checkbox for categories", async () => {
+      useRouter.mockReturnValue({ push: vi.fn() });
       const { drinksStore, userStore } = renderDrinkFiltersSidebarCategories();
       drinksStore.UNIQUE_CATEGORIES = new Set(["Shot", "Shake"]);
 
@@ -57,6 +57,8 @@ describe("DrinkFiltersSidebarCategories", () => {
     });
 
     it("navigates user to drink results page to see fresh batch of filtered drinks", async () => {
+      const push = vi.fn();
+      useRouter.mockReturnValue({ push });
       const { drinksStore, $router } = renderDrinkFiltersSidebarCategories();
       drinksStore.UNIQUE_CATEGORIES = new Set(["Shot"]);
 
@@ -68,7 +70,7 @@ describe("DrinkFiltersSidebarCategories", () => {
       });
       await userEvent.click(shotCheckbox);
 
-      expect($router.push).toHaveBeenCalledWith({ name: "DrinkResults" });
+      expect(push).toHaveBeenCalledWith({ name: "DrinkResults" });
     });
   });
 });
