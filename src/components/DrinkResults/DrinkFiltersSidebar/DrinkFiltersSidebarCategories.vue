@@ -24,30 +24,24 @@
   </collapsible-accordion>
 </template>
 
-<script>
-import { mapActions, mapState } from "pinia";
-import { useDrinksStore, UNIQUE_CATEGORIES } from "@/stores/drinks";
-import { useUserStore, ADD_SELECTED_CATEGORIES } from "@/stores/user";
+<script setup>
+import { computed, ref } from "vue";
+
+import { useRouter } from "vue-router";
+import { useDrinksStore } from "@/stores/drinks";
+import { useUserStore } from "@/stores/user";
 
 import CollapsibleAccordion from "@/components/Shared/CollapsibleAccordion.vue";
 
-export default {
-  name: "DrinkFiltersSidebarCategories",
-  components: { CollapsibleAccordion },
-  data() {
-    return {
-      selectedCategories: [],
-    };
-  },
-  computed: {
-    ...mapState(useDrinksStore, [UNIQUE_CATEGORIES]),
-  },
-  methods: {
-    ...mapActions(useUserStore, [ADD_SELECTED_CATEGORIES]),
-    selectCategory() {
-      this.ADD_SELECTED_CATEGORIES(this.selectedCategories);
-      this.$router.push({ name: "DrinkResults" });
-    },
-  },
+const selectedCategories = ref([]);
+
+const drinksStore = useDrinksStore();
+const UNIQUE_CATEGORIES = computed(() => drinksStore.UNIQUE_CATEGORIES);
+
+const userStore = useUserStore();
+const router = useRouter();
+const selectCategory = () => {
+  userStore.ADD_SELECTED_CATEGORIES(selectedCategories.value);
+  router.push({ name: "DrinkResults" });
 };
 </script>
