@@ -2,22 +2,22 @@ import { render, screen } from "@testing-library/vue";
 import userEvent from "@testing-library/user-event";
 import { createTestingPinia } from "@pinia/testing";
 
+import { useRouter } from "vue-router";
+vi.mock("vue-router");
+
 import DrinkFiltersSidebarGlassTypes from "@/components/DrinkResults/DrinkFiltersSidebar/DrinkFiltersSidebarGlassTypes.vue";
 import { useDrinksStore } from "@/stores/drinks";
 import { useUserStore } from "@/stores/user";
+import { vi } from "vitest";
 
 describe("DrinkFiltersSidebarGlassTypes", () => {
   const renderDrinkFiltersSidebarGlassTypes = () => {
     const pinia = createTestingPinia();
     const drinksStore = useDrinksStore();
     const userStore = useUserStore();
-    const $router = { push: vi.fn() };
 
     render(DrinkFiltersSidebarGlassTypes, {
       global: {
-        mocks: {
-          $router,
-        },
         plugins: [pinia],
         stubs: {
           FontAwesomeIcon: true,
@@ -25,7 +25,7 @@ describe("DrinkFiltersSidebarGlassTypes", () => {
       },
     });
 
-    return { drinksStore, userStore, $router };
+    return { drinksStore, userStore };
   };
 
   it("renders unique list of glass types from drinks", async () => {
@@ -42,6 +42,7 @@ describe("DrinkFiltersSidebarGlassTypes", () => {
 
   describe("when user clicks checkbox", () => {
     it("communicates that user has selected checkbox for glass types", async () => {
+      useRouter.mockReturnValue({ push: vi.fn() });
       const { drinksStore, userStore } = renderDrinkFiltersSidebarGlassTypes();
       drinksStore.UNIQUE_GLASS_TYPES = new Set(["Glass 1", "Glass 2"]);
 
@@ -59,7 +60,9 @@ describe("DrinkFiltersSidebarGlassTypes", () => {
     });
 
     it("navigates user to drink results page to see fresh batch of filtered drinks", async () => {
-      const { drinksStore, $router } = renderDrinkFiltersSidebarGlassTypes();
+      const push = vi.fn();
+      useRouter.mockReturnValue({ push });
+      const { drinksStore } = renderDrinkFiltersSidebarGlassTypes();
       drinksStore.UNIQUE_GLASS_TYPES = new Set(["Glass 1"]);
 
       const button = screen.getByRole("button", { name: /glass types/i });
@@ -70,7 +73,7 @@ describe("DrinkFiltersSidebarGlassTypes", () => {
       });
       await userEvent.click(glass1Checkbox);
 
-      expect($router.push).toHaveBeenCalledWith({ name: "DrinkResults" });
+      expect(push).toHaveBeenCalledWith({ name: "DrinkResults" });
     });
   });
 });
