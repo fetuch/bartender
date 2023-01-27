@@ -24,30 +24,24 @@
   </collapsible-accordion>
 </template>
 
-<script>
-import { mapActions, mapState } from "pinia";
-import { useDrinksStore, UNIQUE_GLASS_TYPES } from "@/stores/drinks";
-import { useUserStore, ADD_SELECTED_GLASS_TYPES } from "@/stores/user";
+<script setup>
+import { computed, ref } from "vue";
+
+import { useRouter } from "vue-router";
+import { useDrinksStore } from "@/stores/drinks";
+import { useUserStore } from "@/stores/user";
 
 import CollapsibleAccordion from "@/components/Shared/CollapsibleAccordion.vue";
 
-export default {
-  name: "DrinkFiltersSidebarGlassTypes",
-  components: { CollapsibleAccordion },
-  data() {
-    return {
-      selectedGlassTypes: [],
-    };
-  },
-  computed: {
-    ...mapState(useDrinksStore, [UNIQUE_GLASS_TYPES]),
-  },
-  methods: {
-    ...mapActions(useUserStore, [ADD_SELECTED_GLASS_TYPES]),
-    selectGlassType() {
-      this.ADD_SELECTED_GLASS_TYPES(this.selectedGlassTypes);
-      this.$router.push({ name: "DrinkResults" });
-    },
-  },
+const selectedGlassTypes = ref([]);
+
+const drinksStore = useDrinksStore();
+const UNIQUE_GLASS_TYPES = computed(() => drinksStore.UNIQUE_GLASS_TYPES);
+
+const userStore = useUserStore();
+const router = useRouter();
+const selectGlassType = () => {
+  userStore.ADD_SELECTED_GLASS_TYPES(selectedGlassTypes.value);
+  router.push({ name: "DrinkResults" });
 };
 </script>
