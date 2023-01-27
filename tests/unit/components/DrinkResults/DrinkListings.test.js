@@ -12,6 +12,8 @@ vi.mock("axios");
 describe("DrinkListings", () => {
   const renderDrinkListings = () => {
     const pinia = createTestingPinia();
+    const drinksStore = useDrinksStore();
+    drinksStore.FILTERED_DRINKS = Array(15).fill({});
 
     render(DrinkListings, {
       global: {
@@ -21,23 +23,23 @@ describe("DrinkListings", () => {
         },
       },
     });
+
+    return { drinksStore };
   };
 
   it("fetches drinks", () => {
     useRoute.mockReturnValue({ query: {} });
 
-    renderDrinkListings();
+    const { drinksStore } = renderDrinkListings();
 
-    const drinksStore = useDrinksStore();
     expect(drinksStore.FETCH_DRINKS).toHaveBeenCalled();
   });
 
   it("displays maximum of 10 drinks", async () => {
     useRoute.mockReturnValue({ query: { page: "1" } });
 
-    renderDrinkListings();
-    const drinksStore = useDrinksStore();
-    drinksStore.drinks = Array(15).fill({});
+    const { drinksStore } = renderDrinkListings();
+    drinksStore.FILTERED_DRINKS = Array(15).fill({});
 
     const drinkListings = await screen.findAllByRole("listitem");
     expect(drinkListings).toHaveLength(10);
@@ -48,7 +50,6 @@ describe("DrinkListings", () => {
       useRoute.mockReturnValue({ query: { page: undefined } });
 
       renderDrinkListings();
-
       expect(screen.getByText("Page 1")).toBeInTheDocument();
     });
   });
@@ -67,9 +68,8 @@ describe("DrinkListings", () => {
     it("does not show link to previous page", async () => {
       useRoute.mockReturnValue({ query: { page: "1" } });
 
-      renderDrinkListings();
-      const drinksStore = useDrinksStore();
-      drinksStore.drinks = Array(15).fill({});
+      const { drinksStore } = renderDrinkListings();
+      drinksStore.FILTERED_DRINKS = Array(15).fill({});
 
       await screen.findAllByRole("listitem");
       const previousLink = screen.queryByRole("link", { name: /previous/i });
@@ -79,9 +79,8 @@ describe("DrinkListings", () => {
     it("shows link to next page", async () => {
       useRoute.mockReturnValue({ query: { page: "1" } });
 
-      renderDrinkListings();
-      const drinksStore = useDrinksStore();
-      drinksStore.drinks = Array(15).fill({});
+      const { drinksStore } = renderDrinkListings();
+      drinksStore.FILTERED_DRINKS = Array(15).fill({});
 
       await screen.findAllByRole("listitem");
       const nextLink = screen.queryByRole("link", { name: /next/i });
@@ -93,9 +92,8 @@ describe("DrinkListings", () => {
     it("does not show link to next page", async () => {
       useRoute.mockReturnValue({ query: { page: "2" } });
 
-      renderDrinkListings();
-      const drinksStore = useDrinksStore();
-      drinksStore.drinks = Array(15).fill({});
+      const { drinksStore } = renderDrinkListings();
+      drinksStore.FILTERED_DRINKS = Array(15).fill({});
 
       await screen.findAllByRole("listitem");
       const nextLink = screen.queryByRole("link", { name: /next/i });
@@ -105,9 +103,8 @@ describe("DrinkListings", () => {
     it("shows link to previous page", async () => {
       useRoute.mockReturnValue({ query: { page: "2" } });
 
-      renderDrinkListings();
-      const drinksStore = useDrinksStore();
-      drinksStore.drinks = Array(15).fill({});
+      const { drinksStore } = renderDrinkListings();
+      drinksStore.FILTERED_DRINKS = Array(15).fill({});
 
       await screen.findAllByRole("listitem");
       const previousLink = screen.queryByRole("link", { name: /previous/i });
