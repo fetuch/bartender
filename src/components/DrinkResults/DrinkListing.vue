@@ -44,19 +44,15 @@
   </li>
 </template>
 
-<script>
-export default {
-  name: "DrinkListing",
-  props: {
-    drink: {
-      type: Object,
-      required: true,
-    },
+<script setup>
+import { computed } from "vue";
+
+const props = defineProps({
+  drink: {
+    type: Object,
+    required: true,
   },
-  computed: {
-    drinkPageLink() {
-      return `/drinks/${this.drink.id}`;
-    },
-  },
-};
+});
+
+const drinkPageLink = computed(() => `/drinks/${props.drink.id}`);
 </script>
