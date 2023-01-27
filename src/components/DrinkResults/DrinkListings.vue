@@ -43,6 +43,10 @@ import { useRoute } from "vue-router";
 import DrinkListing from "@/components/DrinkResults/DrinkListing.vue";
 import { useDrinksStore } from "@/stores/drinks";
 
+import usePreviousAndNextPages from "@/composables/usePreviousAndNextpages";
+
+const FILTERED_DRINKS = computed(() => drinksStore.FILTERED_DRINKS);
+
 const drinksStore = useDrinksStore();
 onMounted(drinksStore.FETCH_DRINKS);
 
@@ -50,20 +54,13 @@ const perPage = ref(10);
 
 const route = useRoute();
 const currentPage = computed(() => Number.parseInt(route.query.page || "1"));
-
-const previousPage = computed(() => {
-  const previousPage = currentPage.value - 1;
-  const firstPage = 1;
-  return previousPage >= firstPage ? previousPage : undefined;
-});
-
-const FILTERED_DRINKS = computed(() => drinksStore.FILTERED_DRINKS);
-
-const nextPage = computed(() => {
-  const nextPage = currentPage.value + 1;
-  const maxPage = Math.ceil(FILTERED_DRINKS.value.length / perPage.value);
-  return nextPage <= maxPage ? nextPage : undefined;
-});
+const maxPage = computed(() =>
+  Math.ceil(FILTERED_DRINKS.value.length / perPage.value)
+);
+const { previousPage, nextPage } = usePreviousAndNextPages(
+  currentPage,
+  maxPage
+);
 
 const displayedDrinks = computed(() => {
   const pageNumber = currentPage.value;
