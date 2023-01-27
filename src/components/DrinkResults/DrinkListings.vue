@@ -36,49 +36,39 @@
   </main>
 </template>
 
-<script>
-import { mapActions, mapState } from "pinia";
+<script setup>
+import { computed, onMounted, ref } from "vue";
+import { useRoute } from "vue-router";
 
 import DrinkListing from "@/components/DrinkResults/DrinkListing.vue";
-import { useDrinksStore, FETCH_DRINKS, FILTERED_DRINKS } from "@/stores/drinks";
+import { useDrinksStore } from "@/stores/drinks";
 
-export default {
-  name: "DrinkListings",
-  components: { DrinkListing },
-  data() {
-    return {
-      perPage: 10,
-    };
-  },
-  computed: {
-    currentPage() {
-      return Number.parseInt(this.$route.query.page || "1");
-    },
-    previousPage() {
-      const previousPage = this.currentPage - 1;
-      const firstPage = 1;
-      return previousPage >= firstPage ? previousPage : undefined;
-    },
-    ...mapState(useDrinksStore, {
-      FILTERED_DRINKS,
-      nextPage() {
-        const nextPage = this.currentPage + 1;
-        const maxPage = Math.ceil(this.FILTERED_DRINKS.length / this.perPage);
-        return nextPage <= maxPage ? nextPage : undefined;
-      },
-      displayedDrinks() {
-        const pageNumber = this.currentPage;
-        const firstDrinkIndex = (pageNumber - 1) * this.perPage;
-        const lastDrinkIndex = pageNumber * this.perPage;
-        return this.FILTERED_DRINKS.slice(firstDrinkIndex, lastDrinkIndex);
-      },
-    }),
-  },
-  async mounted() {
-    this.FETCH_DRINKS();
-  },
-  methods: {
-    ...mapActions(useDrinksStore, [FETCH_DRINKS]),
-  },
-};
+const drinksStore = useDrinksStore();
+onMounted(drinksStore.FETCH_DRINKS);
+
+const perPage = ref(10);
+
+const route = useRoute();
+const currentPage = computed(() => Number.parseInt(route.query.page || "1"));
+
+const previousPage = computed(() => {
+  const previousPage = currentPage.value - 1;
+  const firstPage = 1;
+  return previousPage >= firstPage ? previousPage : undefined;
+});
+
+const FILTERED_DRINKS = computed(() => drinksStore.FILTERED_DRINKS);
+
+const nextPage = computed(() => {
+  const nextPage = currentPage.value + 1;
+  const maxPage = Math.ceil(FILTERED_DRINKS.value.length / perPage.value);
+  return nextPage <= maxPage ? nextPage : undefined;
+});
+
+const displayedDrinks = computed(() => {
+  const pageNumber = currentPage.value;
+  const firstDrinkIndex = (pageNumber - 1) * perPage.value;
+  const lastDrinkIndex = pageNumber * perPage.value;
+  return FILTERED_DRINKS.value.slice(firstDrinkIndex, lastDrinkIndex);
+});
 </script>
