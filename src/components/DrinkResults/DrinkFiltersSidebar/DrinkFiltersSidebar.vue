@@ -12,27 +12,34 @@
         </div>
       </div>
 
-      <drink-filters-sidebar-categories />
-      <drink-filters-sidebar-glass-types />
+      <drink-filters-sidebar-checkbox-group
+        header="Categories"
+        :unique-values="UNIQUE_CATEGORIES"
+        :action="userStore.ADD_SELECTED_CATEGORIES"
+      />
+
+      <drink-filters-sidebar-checkbox-group
+        header="Glass Types"
+        :unique-values="UNIQUE_GLASS_TYPES"
+        :action="userStore.ADD_SELECTED_GLASS_TYPES"
+      />
 
       <collapsible-accordion header="Drink glass" />
     </section>
   </div>
 </template>
 
-<script>
+<script setup>
+import { computed } from "vue";
+import { useDrinksStore } from "@/stores/drinks";
+import { useUserStore } from "@/stores/user";
+
 import ActionButton from "@/components/Shared/ActionButton.vue";
 import CollapsibleAccordion from "@/components/Shared/CollapsibleAccordion.vue";
-import DrinkFiltersSidebarCategories from "@/components/DrinkResults/DrinkFiltersSidebar/DrinkFiltersSidebarCategories.vue";
-import DrinkFiltersSidebarGlassTypes from "@/components/DrinkResults/DrinkFiltersSidebar/DrinkFiltersSidebarGlassTypes.vue";
+import DrinkFiltersSidebarCheckboxGroup from "@/components/DrinkResults/DrinkFiltersSidebar/DrinkFiltersSidebarCheckboxGroup.vue";
 
-export default {
-  name: "DrinkFiltersSidebar",
-  components: {
-    ActionButton,
-    CollapsibleAccordion,
-    DrinkFiltersSidebarCategories,
-    DrinkFiltersSidebarGlassTypes,
-  },
-};
+const userStore = useUserStore();
+const drinksStore = useDrinksStore();
+const UNIQUE_CATEGORIES = computed(() => drinksStore.UNIQUE_CATEGORIES);
+const UNIQUE_GLASS_TYPES = computed(() => drinksStore.UNIQUE_GLASS_TYPES);
 </script>
