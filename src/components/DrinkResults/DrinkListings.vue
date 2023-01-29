@@ -43,7 +43,7 @@ import { useRoute } from "vue-router";
 import DrinkListing from "@/components/DrinkResults/DrinkListing.vue";
 import { useDrinksStore } from "@/stores/drinks";
 
-import usePreviousAndNextPages from "@/composables/usePreviousAndNextpages";
+import usePreviousAndNextPages from "@/composables/usePreviousAndNextPages";
 
 const FILTERED_DRINKS = computed(() => drinksStore.FILTERED_DRINKS);
 
