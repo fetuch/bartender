@@ -1,10 +1,15 @@
+import type { Mock } from "vitest";
 import { createPinia, setActivePinia } from "pinia";
 import axios from "axios";
+
+import type { Drink } from "@/api/types";
 
 import { useDrinksStore } from "@/stores/drinks";
 import { useUserStore } from "@/stores/user";
 
 vi.mock("axios");
+
+const axiosGetMock = axios.get as Mock;
 
 describe("state", () => {
   beforeEach(() => {
@@ -24,7 +29,7 @@ describe("actions", () => {
 
   describe("FETCH_DRINKS", () => {
     it("makes API request and stores received drinks", async () => {
-      axios.get.mockResolvedValue({ data: ["Drink 1", "Drink 2"] });
+      axiosGetMock.mockResolvedValue({ data: ["Drink 1", "Drink 2"] });
       const store = useDrinksStore();
       await store.FETCH_DRINKS();
       expect(store.drinks).toEqual(["Drink 1", "Drink 2"]);
@@ -33,6 +38,22 @@ describe("actions", () => {
 });
 
 describe("getters", () => {
+  const createDrink = (drink: Partial<Drink>): Drink => ({
+    id: 1,
+    name: "Margarita",
+    category: "Ordinary Drink",
+    glass: "Cocktail glass",
+    instructions: "Rub the rim of the glass.",
+    ingredients: [
+      {
+        name: "Tequila",
+        measure: "1 1/2 oz",
+      },
+    ],
+    dateAdded: "2023-01-18",
+    ...drink,
+  });
+
   beforeEach(() => {
     setActivePinia(createPinia());
   });
@@ -41,9 +62,9 @@ describe("getters", () => {
     it("finds unique categories from list of drinks", () => {
       const store = useDrinksStore();
       store.drinks = [
-        { category: "Shot" },
-        { category: "Shake" },
-        { category: "Shot" },
+        createDrink({ category: "Shot" }),
+        createDrink({ category: "Shake" }),
+        createDrink({ category: "Shot" }),
       ];
 
       const result = store.UNIQUE_CATEGORIES;
@@ -56,90 +77,14 @@ describe("getters", () => {
     it("finds unique glass types from list of drinks", () => {
       const store = useDrinksStore();
       store.drinks = [
-        { glass: "Glass 1" },
-        { glass: "Glass 2" },
-        { glass: "Glass 1" },
+        createDrink({ glass: "Glass 1" }),
+        createDrink({ glass: "Glass 2" }),
+        createDrink({ glass: "Glass 1" }),
       ];
 
       const result = store.UNIQUE_GLASS_TYPES;
 
       expect(result).toEqual(new Set(["Glass 1", "Glass 2"]));
-    });
-  });
-
-  describe("FILTERED_DRINKS_BY_CATEGORIES", () => {
-    it("identifies drinks that are associated with the given categories", () => {
-      const drinksStore = useDrinksStore();
-      drinksStore.drinks = [
-        { category: "Shot" },
-        { category: "Shake" },
-        { category: "Beer" },
-      ];
-      const userStore = useUserStore();
-      userStore.selectedCategories = ["Shot", "Beer"];
-
-      const result = drinksStore.FILTERED_DRINKS_BY_CATEGORIES;
-
-      expect(result).toEqual([{ category: "Shot" }, { category: "Beer" }]);
-    });
-
-    describe("when the user has not selected any categories", () => {
-      it("returns all drinks", () => {
-        const drinksStore = useDrinksStore();
-        drinksStore.drinks = [
-          { category: "Shot" },
-          { category: "Shake" },
-          { category: "Beer" },
-        ];
-        const userStore = useUserStore();
-        userStore.selectedCategories = [];
-
-        const result = drinksStore.FILTERED_DRINKS_BY_CATEGORIES;
-
-        expect(result).toEqual([
-          { category: "Shot" },
-          { category: "Shake" },
-          { category: "Beer" },
-        ]);
-      });
-    });
-  });
-
-  describe("FILTERED_DRINKS_BY_GLASS_TYPES", () => {
-    it("identifies drinks that are associated with the given glass type", () => {
-      const drinksStore = useDrinksStore();
-      drinksStore.drinks = [
-        { glass: "Glass 1" },
-        { glass: "Glass 2" },
-        { glass: "Glass 3" },
-      ];
-      const userStore = useUserStore();
-      userStore.selectedGlassTypes = ["Glass 1", "Glass 3"];
-
-      const result = drinksStore.FILTERED_DRINKS_BY_GLASS_TYPES;
-
-      expect(result).toEqual([{ glass: "Glass 1" }, { glass: "Glass 3" }]);
-    });
-
-    describe("when the user has not selected any glass type", () => {
-      it("returns all drinks", () => {
-        const drinksStore = useDrinksStore();
-        drinksStore.drinks = [
-          { glass: "Glass 1" },
-          { glass: "Glass 2" },
-          { glass: "Glass 3" },
-        ];
-        const userStore = useUserStore();
-        userStore.selectedGlassTypes = [];
-
-        const result = drinksStore.FILTERED_DRINKS_BY_GLASS_TYPES;
-
-        expect(result).toEqual([
-          { glass: "Glass 1" },
-          { glass: "Glass 2" },
-          { glass: "Glass 3" },
-        ]);
-      });
     });
   });
 
@@ -149,7 +94,7 @@ describe("getters", () => {
         const userStore = useUserStore();
         userStore.selectedCategories = [];
         const store = useDrinksStore();
-        const drink = { category: "Shot" };
+        const drink = createDrink({ category: "Shot" });
 
         const result = store.INCLUDE_DRINK_BY_CATEGORY(drink);
 
@@ -161,7 +106,7 @@ describe("getters", () => {
       const userStore = useUserStore();
       userStore.selectedCategories = ["Shot", "Shake"];
       const store = useDrinksStore();
-      const drink = { category: "Shot" };
+      const drink = createDrink({ category: "Shot" });
 
       const result = store.INCLUDE_DRINK_BY_CATEGORY(drink);
 
@@ -175,7 +120,7 @@ describe("getters", () => {
         const userStore = useUserStore();
         userStore.selectedGlassTypes = [];
         const store = useDrinksStore();
-        const drink = { glass: "Glass" };
+        const drink = createDrink({ glass: "Glass" });
 
         const result = store.INCLUDE_DRINK_BY_GLASS_TYPE(drink);
 
@@ -187,7 +132,7 @@ describe("getters", () => {
       const userStore = useUserStore();
       userStore.selectedGlassTypes = ["Glass 1", "Glass 2"];
       const store = useDrinksStore();
-      const drink = { glass: "Glass 2" };
+      const drink = createDrink({ glass: "Glass 2" });
 
       const result = store.INCLUDE_DRINK_BY_GLASS_TYPE(drink);
 

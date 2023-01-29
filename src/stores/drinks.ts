@@ -13,9 +13,6 @@ export const INCLUDE_DRINK_BY_CATEGORY = "INCLUDE_DRINK_BY_CATEGORY";
 export const INCLUDE_DRINK_BY_GLASS_TYPE = "INCLUDE_DRINK_BY_GLASS_TYPE";
 export const FILTERED_DRINKS = "FILTERED_DRINKS";
 
-export const FILTERED_DRINKS_BY_CATEGORIES = "FILTERED_DRINKS_BY_CATEGORIES";
-export const FILTERED_DRINKS_BY_GLASS_TYPES = "FILTERED_DRINKS_BY_GLASS_TYPES";
-
 export interface DrinksState {
   drinks: Drink[];
 }
@@ -40,28 +37,6 @@ export const useDrinksStore = defineStore("drinks", {
       const uniqueGlassTypes = new Set<string>();
       state.drinks.forEach((drink) => uniqueGlassTypes.add(drink.glass));
       return uniqueGlassTypes;
-    },
-    [FILTERED_DRINKS_BY_CATEGORIES](state) {
-      const userStore = useUserStore();
-
-      if (userStore.selectedCategories.length === 0) {
-        return state.drinks;
-      }
-
-      return state.drinks.filter((drink) =>
-        userStore.selectedCategories.includes(drink.category)
-      );
-    },
-    [FILTERED_DRINKS_BY_GLASS_TYPES](state) {
-      const userStore = useUserStore();
-
-      if (userStore.selectedGlassTypes.length === 0) {
-        return state.drinks;
-      }
-
-      return state.drinks.filter((drink) =>
-        userStore.selectedGlassTypes.includes(drink.glass)
-      );
     },
     [INCLUDE_DRINK_BY_CATEGORY]: () => (drink: Drink) => {
       const userStore = useUserStore();
