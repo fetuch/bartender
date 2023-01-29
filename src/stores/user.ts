@@ -19,10 +19,10 @@ export const useUserStore = defineStore("user", {
     loginUser() {
       this.isLoggedIn = true;
     },
-    [ADD_SELECTED_CATEGORIES](categories) {
+    [ADD_SELECTED_CATEGORIES](categories: string[]) {
       this.selectedCategories = categories;
     },
-    [ADD_SELECTED_GLASS_TYPES](glassTypes) {
+    [ADD_SELECTED_GLASS_TYPES](glassTypes: string[]) {
       this.selectedGlassTypes = glassTypes;
     },
   },
