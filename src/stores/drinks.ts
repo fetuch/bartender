@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
 
+import type { Drink } from "@/api/types";
+
 import getDrinks from "@/api/getDrinks";
 
 import { useUserStore } from "@/stores/user";
@@ -14,8 +16,12 @@ export const FILTERED_DRINKS = "FILTERED_DRINKS";
 export const FILTERED_DRINKS_BY_CATEGORIES = "FILTERED_DRINKS_BY_CATEGORIES";
 export const FILTERED_DRINKS_BY_GLASS_TYPES = "FILTERED_DRINKS_BY_GLASS_TYPES";
 
+export interface DrinksState {
+  drinks: Drink[];
+}
+
 export const useDrinksStore = defineStore("drinks", {
-  state: () => ({
+  state: (): DrinksState => ({
     drinks: [],
   }),
   actions: {
@@ -26,12 +32,12 @@ export const useDrinksStore = defineStore("drinks", {
   },
   getters: {
     [UNIQUE_CATEGORIES](state) {
-      const uniqueCategories = new Set();
+      const uniqueCategories = new Set<string>();
       state.drinks.forEach((drink) => uniqueCategories.add(drink.category));
       return uniqueCategories;
     },
     [UNIQUE_GLASS_TYPES](state) {
-      const uniqueGlassTypes = new Set();
+      const uniqueGlassTypes = new Set<string>();
       state.drinks.forEach((drink) => uniqueGlassTypes.add(drink.glass));
       return uniqueGlassTypes;
     },
@@ -57,17 +63,17 @@ export const useDrinksStore = defineStore("drinks", {
         userStore.selectedGlassTypes.includes(drink.glass)
       );
     },
-    [INCLUDE_DRINK_BY_CATEGORY]: () => (drink) => {
+    [INCLUDE_DRINK_BY_CATEGORY]: () => (drink: Drink) => {
       const userStore = useUserStore();
       if (userStore.selectedCategories.length === 0) return true;
       return userStore.selectedCategories.includes(drink.category);
     },
-    [INCLUDE_DRINK_BY_GLASS_TYPE]: () => (drink) => {
+    [INCLUDE_DRINK_BY_GLASS_TYPE]: () => (drink: Drink) => {
       const userStore = useUserStore();
       if (userStore.selectedGlassTypes.length === 0) return true;
       return userStore.selectedGlassTypes.includes(drink.glass);
     },
-    [FILTERED_DRINKS](state) {
+    [FILTERED_DRINKS](state): Drink[] {
       return state.drinks
         .filter((drink) => this.INCLUDE_DRINK_BY_CATEGORY(drink))
         .filter((drink) => this.INCLUDE_DRINK_BY_GLASS_TYPE(drink));
