@@ -48,18 +48,8 @@
   </main>
 </template>
 
-<script>
+<script lang="ts" setup>
 import TheHeadline from "@/components/DrinkSearch/TheHeadline.vue";
 import DrinkSearchForm from "@/components/DrinkSearch/DrinkSearchForm.vue";
 import SpotLight from "@/components/DrinkSearch/SpotLight.vue";
-
-export default {
-  name: "TheHero",
-
-  components: {
-    TheHeadline,
-    DrinkSearchForm,
-    SpotLight,
-  },
-};
 </script>
