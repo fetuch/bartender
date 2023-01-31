@@ -11,3 +11,9 @@ export interface Drink {
   ingredients: ingredient[];
   dateAdded: string;
 }
+export interface Spotlight {
+  id: number;
+  img: string;
+  title: string;
+  description: string;
+}
