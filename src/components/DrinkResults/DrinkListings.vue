@@ -42,6 +42,7 @@ import { useRoute } from "vue-router";
 
 import DrinkListing from "@/components/DrinkResults/DrinkListing.vue";
 import { useDrinksStore } from "@/stores/drinks";
+import { useCategoriesStore } from "@/stores/categories";
 
 import usePreviousAndNextPages from "@/composables/usePreviousAndNextPages";
 
@@ -49,6 +50,9 @@ const FILTERED_DRINKS = computed(() => drinksStore.FILTERED_DRINKS);
 
 const drinksStore = useDrinksStore();
 onMounted(drinksStore.FETCH_DRINKS);
+
+const categoriesStore = useCategoriesStore();
+onMounted(categoriesStore.FETCH_CATEGORIES);
 
 const perPage = ref(10);
 

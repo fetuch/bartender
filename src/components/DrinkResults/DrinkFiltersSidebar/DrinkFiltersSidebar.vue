@@ -32,6 +32,7 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 import { useDrinksStore } from "@/stores/drinks";
+import { useCategoriesStore } from "@/stores/categories";
 import { useUserStore } from "@/stores/user";
 
 import ActionButton from "@/components/Shared/ActionButton.vue";
@@ -40,6 +41,9 @@ import DrinkFiltersSidebarCheckboxGroup from "@/components/DrinkResults/DrinkFil
 
 const userStore = useUserStore();
 const drinksStore = useDrinksStore();
-const UNIQUE_CATEGORIES = computed(() => drinksStore.UNIQUE_CATEGORIES);
+// const UNIQUE_CATEGORIES = computed(() => drinksStore.UNIQUE_CATEGORIES);
 const UNIQUE_GLASS_TYPES = computed(() => drinksStore.UNIQUE_GLASS_TYPES);
+
+const categoriesStore = useCategoriesStore();
+const UNIQUE_CATEGORIES = computed(() => categoriesStore.UNIQUE_CATEGORIES);
 </script>

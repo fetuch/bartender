@@ -7,6 +7,7 @@ vi.mock("vue-router");
 
 import DrinkListings from "@/components/DrinkResults/DrinkListings.vue";
 import { useDrinksStore } from "@/stores/drinks";
+import { useCategoriesStore } from "@/stores/categories";
 
 vi.mock("axios");
 const useRouteMock = useRoute as Mock;
@@ -15,6 +16,7 @@ describe("DrinkListings", () => {
   const renderDrinkListings = () => {
     const pinia = createTestingPinia();
     const drinksStore = useDrinksStore();
+    const categoriesStore = useCategoriesStore();
     // @ts-expect-error: Getter is read only.
     drinksStore.FILTERED_DRINKS = Array(15).fill({});
 
@@ -27,7 +29,7 @@ describe("DrinkListings", () => {
       },
     });
 
-    return { drinksStore };
+    return { categoriesStore, drinksStore };
   };
 
   it("fetches drinks", () => {
@@ -36,6 +38,14 @@ describe("DrinkListings", () => {
     const { drinksStore } = renderDrinkListings();
 
     expect(drinksStore.FETCH_DRINKS).toHaveBeenCalled();
+  });
+
+  it("fetches categories", () => {
+    useRouteMock.mockReturnValue({ query: {} });
+
+    const { categoriesStore } = renderDrinkListings();
+
+    expect(categoriesStore.FETCH_CATEGORIES).toHaveBeenCalled();
   });
 
   it("displays maximum of 10 drinks", async () => {
