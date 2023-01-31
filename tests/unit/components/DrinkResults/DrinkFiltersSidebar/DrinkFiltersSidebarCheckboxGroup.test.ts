@@ -1,3 +1,4 @@
+import type { Mock } from "vitest";
 import { render, screen } from "@testing-library/vue";
 import userEvent from "@testing-library/user-event";
 import { createTestingPinia } from "@pinia/testing";
@@ -6,16 +7,27 @@ import { useRouter } from "vue-router";
 vi.mock("vue-router");
 
 import DrinkFiltersSidebarCheckboxGroup from "@/components/DrinkResults/DrinkFiltersSidebar/DrinkFiltersSidebarCheckboxGroup.vue";
+const useRouterMock = useRouter as Mock;
 
 describe("DrinkFiltersSidebarCheckboxGroup", () => {
-  const createProps = (props = {}) => ({
+  interface DrinkFiltersSidebarCheckboxGroupProps {
+    header: string;
+    uniqueValues: Set<string>;
+    action: Mock;
+  }
+
+  const createProps = (
+    props: Partial<DrinkFiltersSidebarCheckboxGroupProps> = {}
+  ) => ({
     header: "Some header",
     uniqueValues: new Set(["ValueA", "ValueB"]),
     action: vi.fn(),
     ...props,
   });
 
-  const renderDrinkFiltersSidebarCheckboxGroup = (props) => {
+  const renderDrinkFiltersSidebarCheckboxGroup = (
+    props: DrinkFiltersSidebarCheckboxGroupProps
+  ) => {
     const pinia = createTestingPinia();
 
     render(DrinkFiltersSidebarCheckboxGroup, {
@@ -48,7 +60,7 @@ describe("DrinkFiltersSidebarCheckboxGroup", () => {
 
   describe("when user clicks checkbox", () => {
     it("communicates that user has selected checkbox for value", async () => {
-      useRouter.mockReturnValue({ push: vi.fn() });
+      useRouterMock.mockReturnValue({ push: vi.fn() });
       const action = vi.fn();
       const props = createProps({
         header: "Categories",
@@ -70,7 +82,7 @@ describe("DrinkFiltersSidebarCheckboxGroup", () => {
 
     it("navigates user to drink results page to see fresh batch of filtered drinks", async () => {
       const push = vi.fn();
-      useRouter.mockReturnValue({ push });
+      useRouterMock.mockReturnValue({ push });
       const props = createProps({
         header: "Categories",
         uniqueValues: new Set(["Shot"]),
