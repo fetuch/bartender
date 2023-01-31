@@ -42,21 +42,6 @@ describe("getters", () => {
     setActivePinia(createPinia());
   });
 
-  describe("UNIQUE_CATEGORIES", () => {
-    it("finds unique categories from list of drinks", () => {
-      const store = useDrinksStore();
-      store.drinks = [
-        createDrink({ category: "Shot" }),
-        createDrink({ category: "Shake" }),
-        createDrink({ category: "Shot" }),
-      ];
-
-      const result = store.UNIQUE_CATEGORIES;
-
-      expect(result).toEqual(new Set(["Shot", "Shake"]));
-    });
-  });
-
   describe("UNIQUE_GLASS_TYPES", () => {
     it("finds unique glass types from list of drinks", () => {
       const store = useDrinksStore();

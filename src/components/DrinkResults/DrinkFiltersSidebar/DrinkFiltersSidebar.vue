@@ -41,7 +41,6 @@ import DrinkFiltersSidebarCheckboxGroup from "@/components/DrinkResults/DrinkFil
 
 const userStore = useUserStore();
 const drinksStore = useDrinksStore();
-// const UNIQUE_CATEGORIES = computed(() => drinksStore.UNIQUE_CATEGORIES);
 const UNIQUE_GLASS_TYPES = computed(() => drinksStore.UNIQUE_GLASS_TYPES);
 
 const categoriesStore = useCategoriesStore();

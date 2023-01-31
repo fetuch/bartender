@@ -7,7 +7,6 @@ import getDrinks from "@/api/getDrinks";
 import { useUserStore } from "@/stores/user";
 
 export const FETCH_DRINKS = "FETCH_DRINKS";
-export const UNIQUE_CATEGORIES = "UNIQUE_CATEGORIES";
 export const UNIQUE_GLASS_TYPES = "UNIQUE_GLASS_TYPES";
 export const INCLUDE_DRINK_BY_CATEGORY = "INCLUDE_DRINK_BY_CATEGORY";
 export const INCLUDE_DRINK_BY_GLASS_TYPE = "INCLUDE_DRINK_BY_GLASS_TYPE";
@@ -28,11 +27,6 @@ export const useDrinksStore = defineStore("drinks", {
     },
   },
   getters: {
-    [UNIQUE_CATEGORIES](state) {
-      const uniqueCategories = new Set<string>();
-      state.drinks.forEach((drink) => uniqueCategories.add(drink.category));
-      return uniqueCategories;
-    },
     [UNIQUE_GLASS_TYPES](state) {
       const uniqueGlassTypes = new Set<string>();
       state.drinks.forEach((drink) => uniqueGlassTypes.add(drink.glass));
