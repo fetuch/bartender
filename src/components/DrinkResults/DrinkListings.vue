@@ -36,7 +36,7 @@
   </main>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { computed, onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 
@@ -53,7 +53,9 @@ onMounted(drinksStore.FETCH_DRINKS);
 const perPage = ref(10);
 
 const route = useRoute();
-const currentPage = computed(() => Number.parseInt(route.query.page || "1"));
+const currentPage = computed(() =>
+  Number.parseInt((route.query.page as string) || "1")
+);
 const maxPage = computed(() =>
   Math.ceil(FILTERED_DRINKS.value.length / perPage.value)
 );
