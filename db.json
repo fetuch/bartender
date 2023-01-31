@@ -1,4 +1,22 @@
 {
+  "categories": [
+    {
+      "id": 1,
+      "name": "Beer"
+    },
+    {
+      "id": 2,
+      "name": "Shake"
+    },
+    {
+      "id": 3,
+      "name": "Shot"
+    },
+    {
+      "id": 4,
+      "name": "Ordinary Drink"
+    }
+  ],
   "drinks": [
     {
       "id": 1,
