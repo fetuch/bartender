@@ -26,7 +26,10 @@
 
           <div>
             <ul class="list-disc pl-8">
-              <li v-for="ingredient in drink.ingredients" :key="ingredient">
+              <li
+                v-for="ingredient in drink.ingredients"
+                :key="ingredient.name"
+              >
                 {{ ingredient.name }}<span v-show="ingredient.measure">,</span>
                 {{ ingredient.measure }}
               </li>
@@ -44,12 +47,14 @@
   </li>
 </template>
 
-<script setup>
-import { computed } from "vue";
+<script lang="ts" setup>
+import { computed, type PropType } from "vue";
+
+import type { Drink } from "@/api/types";
 
 const props = defineProps({
   drink: {
-    type: Object,
+    type: Object as PropType<Drink>,
     required: true,
   },
 });

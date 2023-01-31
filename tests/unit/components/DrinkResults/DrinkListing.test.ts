@@ -1,26 +1,13 @@
 import { render, screen } from "@testing-library/vue";
 import { RouterLinkStub } from "@vue/test-utils";
 
+import type { Drink, Ingredient } from "@/api/types";
+import { createDrink } from "../../../utils/createDrink";
+
 import DrinkListing from "@/components/DrinkResults/DrinkListing.vue";
 
 describe("DrinkListing", () => {
-  const createDrinkProps = (drinkProps = {}) => ({
-    name: "Margarita",
-    category: "Ordinary Drink",
-    ingredients: [
-      {
-        name: "Tequila",
-        measure: "1 1/2 oz",
-      },
-      {
-        name: "Orange",
-        measure: "1",
-      },
-    ],
-    ...drinkProps,
-  });
-
-  const renderDrinkListing = (drinkProps) => {
+  const renderDrinkListing = (drink: Drink) => {
     render(DrinkListing, {
       global: {
         stubs: {
@@ -29,36 +16,36 @@ describe("DrinkListing", () => {
       },
       props: {
         drink: {
-          ...drinkProps,
+          ...drink,
         },
       },
     });
   };
 
   it("renders drink name", () => {
-    const drinkProps = createDrinkProps({ name: "Jamaica Kiss" });
-    renderDrinkListing(drinkProps);
+    const drink = createDrink({ name: "Jamaica Kiss" });
+    renderDrinkListing(drink);
     expect(screen.getByText("Jamaica Kiss")).toBeInTheDocument();
   });
 
   it("renders drink category", () => {
-    const drinkProps = createDrinkProps({ category: "Shot" });
-    renderDrinkListing(drinkProps);
+    const drink = createDrink({ category: "Shot" });
+    renderDrinkListing(drink);
     expect(screen.getByText(/Shot/)).toBeInTheDocument();
   });
 
   it("renders drink ingredients", () => {
-    const drinkProps = createDrinkProps({
+    const drink = createDrink({
       ingredients: [
         {
           name: "Lager",
-        },
+        } as Ingredient,
         {
           name: "Campari",
-        },
+        } as Ingredient,
       ],
     });
-    renderDrinkListing(drinkProps);
+    renderDrinkListing(drink);
     expect(screen.getByText(/Lager/)).toBeInTheDocument();
     expect(screen.getByText(/Campari/)).toBeInTheDocument();
   });
