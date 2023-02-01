@@ -8,7 +8,11 @@
           What are you searching for?
         </h3>
         <div class="flex items-center text-sm">
-          <action-button text="Clear Filters" type="secondary" />
+          <action-button
+            text="Clear Filters"
+            type="secondary"
+            @click="userStore.CLEAR_USER_DRINK_FILTER_SELECTIONS"
+          />
         </div>
       </div>
 
@@ -23,8 +27,6 @@
         :unique-values="UNIQUE_GLASS_TYPES"
         :action="userStore.ADD_SELECTED_GLASS_TYPES"
       />
-
-      <collapsible-accordion header="Drink glass" />
     </section>
   </div>
 </template>
@@ -36,7 +38,6 @@ import { useCategoriesStore } from "@/stores/categories";
 import { useUserStore } from "@/stores/user";
 
 import ActionButton from "@/components/Shared/ActionButton.vue";
-import CollapsibleAccordion from "@/components/Shared/CollapsibleAccordion.vue";
 import DrinkFiltersSidebarCheckboxGroup from "@/components/DrinkResults/DrinkFiltersSidebar/DrinkFiltersSidebarCheckboxGroup.vue";
 
 const userStore = useUserStore();

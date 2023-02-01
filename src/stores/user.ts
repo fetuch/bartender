@@ -1,12 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
-export interface UserState {
-  isLoggedIn: boolean;
-  selectedCategories: string[];
-  selectedGlassTypes: string[];
-}
-
 export const useUserStore = defineStore("user", () => {
   const isLoggedIn = ref(false);
   const selectedCategories = ref<string[]>([]);
