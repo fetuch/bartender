@@ -51,4 +51,17 @@ describe("actions", () => {
       expect(store.selectedGlassTypes).toEqual(["Glass1", "Glass2"]);
     });
   });
+
+  describe("CLEAR_USER_DRINK_FILTER_SELECTIONS", () => {
+    it("removes all drink filters that user has chosen", () => {
+      const store = useUserStore();
+      store.selectedCategories = ["Random category"];
+      store.selectedGlassTypes = ["Random glass type"];
+
+      store.CLEAR_USER_DRINK_FILTER_SELECTIONS();
+
+      expect(store.selectedCategories).toEqual([]);
+      expect(store.selectedGlassTypes).toEqual([]);
+    });
+  });
 });
