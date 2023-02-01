@@ -16,17 +16,19 @@
         </div>
       </div>
 
-      <drink-filters-sidebar-checkbox-group
-        header="Categories"
-        :unique-values="UNIQUE_CATEGORIES"
-        :action="userStore.ADD_SELECTED_CATEGORIES"
-      />
+      <collapsible-accordion header="Categories">
+        <drink-filters-sidebar-checkbox-group
+          :unique-values="UNIQUE_CATEGORIES"
+          :action="userStore.ADD_SELECTED_CATEGORIES"
+        />
+      </collapsible-accordion>
 
-      <drink-filters-sidebar-checkbox-group
-        header="Glass Types"
-        :unique-values="UNIQUE_GLASS_TYPES"
-        :action="userStore.ADD_SELECTED_GLASS_TYPES"
-      />
+      <collapsible-accordion header="Glass Types">
+        <drink-filters-sidebar-checkbox-group
+          :unique-values="UNIQUE_GLASS_TYPES"
+          :action="userStore.ADD_SELECTED_GLASS_TYPES"
+        />
+      </collapsible-accordion>
     </section>
   </div>
 </template>
@@ -37,6 +39,7 @@ import { useDrinksStore } from "@/stores/drinks";
 import { useCategoriesStore } from "@/stores/categories";
 import { useUserStore } from "@/stores/user";
 
+import CollapsibleAccordion from "@/components/Shared/CollapsibleAccordion.vue";
 import ActionButton from "@/components/Shared/ActionButton.vue";
 import DrinkFiltersSidebarCheckboxGroup from "@/components/DrinkResults/DrinkFiltersSidebar/DrinkFiltersSidebarCheckboxGroup.vue";
 

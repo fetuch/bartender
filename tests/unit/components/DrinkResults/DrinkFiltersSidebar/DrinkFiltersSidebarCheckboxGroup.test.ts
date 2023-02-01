@@ -11,7 +11,6 @@ const useRouterMock = useRouter as Mock;
 
 describe("DrinkFiltersSidebarCheckboxGroup", () => {
   interface DrinkFiltersSidebarCheckboxGroupProps {
-    header: string;
     uniqueValues: Set<string>;
     action: Mock;
   }
@@ -19,7 +18,6 @@ describe("DrinkFiltersSidebarCheckboxGroup", () => {
   const createProps = (
     props: Partial<DrinkFiltersSidebarCheckboxGroupProps> = {}
   ) => ({
-    header: "Some header",
     uniqueValues: new Set(["ValueA", "ValueB"]),
     action: vi.fn(),
     ...props,
@@ -43,15 +41,11 @@ describe("DrinkFiltersSidebarCheckboxGroup", () => {
     });
   };
 
-  it("renders unique list of values", async () => {
+  it("renders unique list of values", () => {
     const props = createProps({
-      header: "Categories",
       uniqueValues: new Set(["Shot", "Shake"]),
     });
     renderDrinkFiltersSidebarCheckboxGroup(props);
-
-    const button = screen.getByRole("button", { name: /categories/i });
-    await userEvent.click(button);
 
     const categoryListItems = screen.getAllByRole("listitem");
     const categories = categoryListItems.map((node) => node.textContent);
@@ -63,14 +57,10 @@ describe("DrinkFiltersSidebarCheckboxGroup", () => {
       useRouterMock.mockReturnValue({ push: vi.fn() });
       const action = vi.fn();
       const props = createProps({
-        header: "Categories",
         uniqueValues: new Set(["Shot", "Shake"]),
         action,
       });
       renderDrinkFiltersSidebarCheckboxGroup(props);
-
-      const button = screen.getByRole("button", { name: /categories/i });
-      await userEvent.click(button);
 
       const shotCheckbox = screen.getByRole("checkbox", {
         name: /shot/i,
@@ -84,13 +74,9 @@ describe("DrinkFiltersSidebarCheckboxGroup", () => {
       const push = vi.fn();
       useRouterMock.mockReturnValue({ push });
       const props = createProps({
-        header: "Categories",
         uniqueValues: new Set(["Shot"]),
       });
       renderDrinkFiltersSidebarCheckboxGroup(props);
-
-      const button = screen.getByRole("button", { name: /categories/i });
-      await userEvent.click(button);
 
       const shotCheckbox = screen.getByRole("checkbox", {
         name: /shot/i,
