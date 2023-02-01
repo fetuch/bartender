@@ -1,9 +1,5 @@
 import { defineStore } from "pinia";
-
-export const ADD_SELECTED_CATEGORIES = "ADD_SELECTED_CATEGORIES";
-export const ADD_SELECTED_GLASS_TYPES = "ADD_SELECTED_GLASS_TYPES";
-export const CLEAR_USER_DRINK_FILTER_SELECTIONS =
-  "CLEAR_USER_DRINK_FILTER_SELECTIONS";
+import { ref } from "vue";
 
 export interface UserState {
   isLoggedIn: boolean;
@@ -11,25 +7,35 @@ export interface UserState {
   selectedGlassTypes: string[];
 }
 
-export const useUserStore = defineStore("user", {
-  state: (): UserState => ({
-    isLoggedIn: false,
-    selectedCategories: [],
-    selectedGlassTypes: [],
-  }),
-  actions: {
-    loginUser() {
-      this.isLoggedIn = true;
-    },
-    [ADD_SELECTED_CATEGORIES](categories: string[]) {
-      this.selectedCategories = categories;
-    },
-    [ADD_SELECTED_GLASS_TYPES](glassTypes: string[]) {
-      this.selectedGlassTypes = glassTypes;
-    },
-    [CLEAR_USER_DRINK_FILTER_SELECTIONS]() {
-      this.selectedCategories = [];
-      this.selectedGlassTypes = [];
-    },
-  },
+export const useUserStore = defineStore("user", () => {
+  const isLoggedIn = ref(false);
+  const selectedCategories = ref<string[]>([]);
+  const selectedGlassTypes = ref<string[]>([]);
+
+  const LOGIN_USER = () => {
+    isLoggedIn.value = true;
+  };
+
+  const ADD_SELECTED_CATEGORIES = (categories: string[]) => {
+    selectedCategories.value = categories;
+  };
+
+  const ADD_SELECTED_GLASS_TYPES = (glassTypes: string[]) => {
+    selectedGlassTypes.value = glassTypes;
+  };
+
+  const CLEAR_USER_DRINK_FILTER_SELECTIONS = () => {
+    selectedCategories.value = [];
+    selectedGlassTypes.value = [];
+  };
+
+  return {
+    isLoggedIn,
+    selectedCategories,
+    selectedGlassTypes,
+    LOGIN_USER,
+    ADD_SELECTED_CATEGORIES,
+    ADD_SELECTED_GLASS_TYPES,
+    CLEAR_USER_DRINK_FILTER_SELECTIONS,
+  };
 });
