@@ -2,6 +2,7 @@ import type { Mock } from "vitest";
 import { render, screen } from "@testing-library/vue";
 import userEvent from "@testing-library/user-event";
 import { createTestingPinia } from "@pinia/testing";
+import { useUserStore } from "@/stores/user";
 
 import { useRouter } from "vue-router";
 vi.mock("vue-router");
@@ -26,7 +27,10 @@ describe("DrinkFiltersSidebarCheckboxGroup", () => {
   const renderDrinkFiltersSidebarCheckboxGroup = (
     props: DrinkFiltersSidebarCheckboxGroupProps
   ) => {
-    const pinia = createTestingPinia();
+    // use real methods - { stubActions: false }
+    // to fullfill CLEAR_USER_DRINK_FILTER_SELECTIONS test
+    const pinia = createTestingPinia({ stubActions: false });
+    const userStore = useUserStore();
 
     render(DrinkFiltersSidebarCheckboxGroup, {
       props: {
@@ -34,11 +38,10 @@ describe("DrinkFiltersSidebarCheckboxGroup", () => {
       },
       global: {
         plugins: [pinia],
-        stubs: {
-          FontAwesomeIcon: true,
-        },
       },
     });
+
+    return { userStore };
   };
 
   it("renders unique list of values", () => {
@@ -84,6 +87,34 @@ describe("DrinkFiltersSidebarCheckboxGroup", () => {
       await userEvent.click(shotCheckbox);
 
       expect(push).toHaveBeenCalledWith({ name: "DrinkResults" });
+    });
+  });
+
+  describe("when user clears drink filters", () => {
+    it("unchecks any checked checkboxes", async () => {
+      useRouterMock.mockReturnValue({ push: vi.fn() });
+      const props = createProps({
+        uniqueValues: new Set(["Shot"]),
+      });
+      const { userStore } = renderDrinkFiltersSidebarCheckboxGroup(props);
+
+      const categoriesCheckboxBeforeAction = screen.getByRole<HTMLInputElement>(
+        "checkbox",
+        {
+          name: /shot/i,
+        }
+      );
+      await userEvent.click(categoriesCheckboxBeforeAction);
+
+      expect(categoriesCheckboxBeforeAction.checked).toBe(true);
+
+      userStore.CLEAR_USER_DRINK_FILTER_SELECTIONS();
+
+      const categoriesCheckboxAfterAction =
+        await screen.findByRole<HTMLInputElement>("checkbox", {
+          name: /shot/i,
+        });
+      expect(categoriesCheckboxAfterAction.checked).toBe(false);
     });
   });
 });
