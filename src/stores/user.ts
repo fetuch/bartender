@@ -25,6 +25,7 @@ export const useUserStore = defineStore("user", () => {
   const CLEAR_USER_DRINK_FILTER_SELECTIONS = () => {
     selectedCategories.value = [];
     selectedGlassTypes.value = [];
+    nameSearchTerm.value = "";
   };
 
   const UPDATE_NAME_SEARCH_TERM = (name: string) => {

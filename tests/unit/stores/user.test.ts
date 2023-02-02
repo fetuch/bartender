@@ -70,12 +70,14 @@ describe("actions", () => {
     it("removes all drink filters that user has chosen", () => {
       const store = useUserStore();
       store.selectedCategories = ["Random category"];
-      store.selectedGlassTypes = ["Random glass type"];
+      store.selectedCategories = ["Random category"];
+      store.nameSearchTerm = "cuba";
 
       store.CLEAR_USER_DRINK_FILTER_SELECTIONS();
 
       expect(store.selectedCategories).toEqual([]);
       expect(store.selectedGlassTypes).toEqual([]);
+      expect(store.nameSearchTerm).toEqual("");
     });
   });
 });
