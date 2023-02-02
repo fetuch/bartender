@@ -8,6 +8,7 @@ export const useUserStore = defineStore("user", () => {
   const isLoggedIn = ref(false);
   const selectedCategories = ref<string[]>([]);
   const selectedGlassTypes = ref<string[]>([]);
+  const nameSearchTerm = ref("");
 
   const LOGIN_USER = () => {
     isLoggedIn.value = true;
@@ -26,13 +27,19 @@ export const useUserStore = defineStore("user", () => {
     selectedGlassTypes.value = [];
   };
 
+  const UPDATE_NAME_SEARCH_TERM = (name: string) => {
+    nameSearchTerm.value = name;
+  };
+
   return {
     isLoggedIn,
     selectedCategories,
     selectedGlassTypes,
+    nameSearchTerm,
     LOGIN_USER,
     ADD_SELECTED_CATEGORIES,
     ADD_SELECTED_GLASS_TYPES,
     CLEAR_USER_DRINK_FILTER_SELECTIONS,
+    UPDATE_NAME_SEARCH_TERM,
   };
 });

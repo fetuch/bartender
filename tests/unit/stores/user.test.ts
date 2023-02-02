@@ -21,6 +21,11 @@ describe("state", () => {
     const store = useUserStore();
     expect(store.selectedGlassTypes).toEqual([]);
   });
+
+  it("store's user's search term for drink name", () => {
+    const store = useUserStore();
+    expect(store.nameSearchTerm).toBe("");
+  });
 });
 
 describe("actions", () => {
@@ -49,6 +54,15 @@ describe("actions", () => {
       const store = useUserStore();
       store.ADD_SELECTED_GLASS_TYPES(["Glass1", "Glass2"]);
       expect(store.selectedGlassTypes).toEqual(["Glass1", "Glass2"]);
+    });
+  });
+
+  describe("UPDATE_NAME_SEARCH_TERM", () => {
+    it("receives search term for drink name the user has entered", () => {
+      const store = useUserStore();
+      store.nameSearchTerm = "";
+      store.UPDATE_NAME_SEARCH_TERM("Margarita");
+      expect(store.nameSearchTerm).toBe("Margarita");
     });
   });
 

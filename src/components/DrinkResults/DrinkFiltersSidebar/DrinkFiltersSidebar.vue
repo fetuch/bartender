@@ -5,6 +5,8 @@
     <section class="pb-5">
       <drink-filters-sidebar-prompt />
 
+      <drink-filters-sidebar-name />
+
       <collapsible-accordion header="Categories">
         <drink-filters-sidebar-categories />
       </collapsible-accordion>
@@ -21,4 +23,5 @@ import CollapsibleAccordion from "@/components/Shared/CollapsibleAccordion.vue";
 import DrinkFiltersSidebarPrompt from "@/components/DrinkResults/DrinkFiltersSidebar/DrinkFiltersSidebarPrompt.vue";
 import DrinkFiltersSidebarCategories from "@/components/DrinkResults/DrinkFiltersSidebar/DrinkFiltersSidebarCategories.vue";
 import DrinkFiltersSidebarGlassTypes from "@/components/DrinkResults/DrinkFiltersSidebar/DrinkFiltersSidebarGlassTypes.vue";
+import DrinkFiltersSidebarName from "@/components/DrinkResults/DrinkFiltersSidebar/DrinkFiltersSidebarName.vue";
 </script>
