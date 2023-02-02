@@ -108,4 +108,41 @@ describe("getters", () => {
       expect(result).toBe(true);
     });
   });
+
+  describe("INCLUDE_DRINK_BY_NAME", () => {
+    it("identifies if drink matches provided name", () => {
+      const userStore = useUserStore();
+      userStore.nameSearchTerm = "Cuba";
+      const store = useDrinksStore();
+      const drink = createDrink({ name: "Cuba Libre" });
+
+      const result = store.INCLUDE_DRINK_BY_NAME(drink);
+
+      expect(result).toBe(true);
+    });
+
+    it("handles inconsistent character casing", () => {
+      const userStore = useUserStore();
+      userStore.nameSearchTerm = "CUBA";
+      const store = useDrinksStore();
+      const drink = createDrink({ name: "Cuba Libre" });
+
+      const result = store.INCLUDE_DRINK_BY_NAME(drink);
+
+      expect(result).toBe(true);
+    });
+
+    describe("when the user has not entered any name", () => {
+      it("includes name", () => {
+        const userStore = useUserStore();
+        userStore.nameSearchTerm = "";
+        const store = useDrinksStore();
+        const drink = createDrink({ name: "Cuba Libre" });
+
+        const result = store.INCLUDE_DRINK_BY_NAME(drink);
+
+        expect(result).toBe(true);
+      });
+    });
+  });
 });
